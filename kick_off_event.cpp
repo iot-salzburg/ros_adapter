@@ -17,7 +17,7 @@ using namespace std;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool moveToInitialPosition(franka::Robot &robot, float speed, franka::Gripper &gripper){
+bool moveToInitialPosition(franka::Robot &robot, float speed, franka::Gripper &gripper){// Passt
     std::array<double, 7> q_goal = {{0, -M_PI_4, 0, -3 * M_PI_4, 0, M_PI_2, M_PI_4}};
     MotionGenerator motion_generator(speed, q_goal);
     bool notCorrectPosition = true;
@@ -47,21 +47,22 @@ bool moveToInitialPosition(franka::Robot &robot, float speed, franka::Gripper &g
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool moveToPrinter(franka::Robot &robot, float speed){
+bool moveToPrinter(franka::Robot &robot, float speed){ // Passt
      bool notCorrectPosition = true;
      
     // Fängt an das Objekt vom Drucker zu heben
    
     // Erste Position
     std::array<double, 7> q_goal = 
-              {{-0.041735,            // Joint 1
-                +0.657479,            // Joint 2
-                +0.839581,            // Joint 3
-                -1.654211 ,           // Joint 4
-                +0.383426 ,           // Joint 5
-                +1.655406,            // Joint 6
-                -1.303061             // Joint 7  
+              {{-2.136935,            // Joint 1
+                -0.829897,            // Joint 2
+                +2.508779,            // Joint 3
+                -1.023524,           // Joint 4
+                +0.956515,           // Joint 5
+                +0.849816,            // Joint 6
+                +1.410623             // Joint 7  
                 }};
+ 
     MotionGenerator motion_generator1(speed, q_goal);
 
     while(notCorrectPosition){
@@ -87,13 +88,13 @@ bool moveToPrinter(franka::Robot &robot, float speed){
 
     // Position direkt beim Drucker
     q_goal = 
-              {{+0.270922,            // Joint 1
-                +0.680191,            // Joint 2
-                +0.593400,            // Joint 3
-                -2.094262,           // Joint 4
-                -0.890771,           // Joint 5
-                +2.599196,            // Joint 6
-                -0.844511             // Joint 7  
+              {{-2.021821,            // Joint 1
+                -1.397909,            // Joint 2
+                +2.402339,            // Joint 3
+                -1.073298,           // Joint 4
+                +1.213987,           // Joint 5
+                +1.125178,            // Joint 6
+                +1.118048             // Joint 7  
                 }};
  
 MotionGenerator motion_generator2(speed, q_goal);
@@ -121,20 +122,20 @@ MotionGenerator motion_generator2(speed, q_goal);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool moveFromPrinter(franka::Robot &robot, float speed){
+bool moveFromPrinter(franka::Robot &robot, float speed){ // Passt
      bool notCorrectPosition = true;
      
     // Fängt an das Objekt vom Drucker zu heben
    
     // Erste Position
     std::array<double, 7> q_goal = 
-              {{-0.041735,            // Joint 1
-                +0.657479,            // Joint 2
-                +0.839581,            // Joint 3
-                -1.654211 ,           // Joint 4
-                +0.383426 ,           // Joint 5
-                +1.655406,            // Joint 6
-                -1.303061             // Joint 7  
+              {{-2.136935,            // Joint 1
+                -0.829897,            // Joint 2
+                +2.508779,            // Joint 3
+                -1.023524,           // Joint 4
+                +0.956515,           // Joint 5
+                +0.849816,            // Joint 6
+                +1.410623             // Joint 7  
                 }};
     MotionGenerator motion_generator1(speed, q_goal);
 
@@ -161,18 +162,18 @@ bool moveFromPrinter(franka::Robot &robot, float speed){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool moveToOutput(franka::Robot &robot, float speed){
+bool moveToOutput(franka::Robot &robot, float speed){ // Passt
      bool notCorrectPosition = true;
    
     // Erste Position
     std::array<double, 7> q_goal = 
-              {{-0.679752,            // Joint 1
-                +0.543608,            // Joint 2
-                +1.150953,            // Joint 3
-                -1.414210,           // Joint 4
-                -1.927951,           // Joint 5
-                +1.068629,            // Joint 6
-                -0.621254             // Joint 7  
+              {{-2.596118,            // Joint 1
+                -0.377315,            // Joint 2
+                +2.351006,            // Joint 3
+                -1.445618,           // Joint 4
+                -0.761017,           // Joint 5
+                +1.976400,            // Joint 6
+                -0.890843             // Joint 7  
                 }};
     
     MotionGenerator motion_generator3(speed, q_goal);
@@ -198,15 +199,14 @@ bool moveToOutput(franka::Robot &robot, float speed){
 
 // Position über dem Förderband
     q_goal = 
-              {{-0.772128,            // Joint 1
-                +1.319637,            // Joint 2
-                +0.939751,            // Joint 3
-                -1.490945,           // Joint 4
-                -2.378254,           // Joint 5
-                +1.157728,            // Joint 6
-                -0.081711             // Joint 7  
+              {{-2.766183,            // Joint 1
+                -1.121700,            // Joint 2
+                +2.376853,            // Joint 3
+                -1.638175,           // Joint 4
+                -0.804047,           // Joint 5
+                +2.683076,            // Joint 6
+                -0.173219             // Joint 7  
                 }};
-
 
     MotionGenerator motion_generator4(speed, q_goal);
     notCorrectPosition = true;
@@ -235,42 +235,57 @@ bool moveToOutput(franka::Robot &robot, float speed){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool getBlockFromPrinterToOutput(franka::Robot &robot, float speed, float grasping_width, franka::Gripper &gripper){
+bool moveFromOutput(franka::Robot &robot, float speed){ // Passt
+bool notCorrectPosition = true;
+   
+    // Erste Position
+    std::array<double, 7> q_goal = 
+              {{-2.596118,            // Joint 1
+                -0.377315,            // Joint 2
+                +2.351006,            // Joint 3
+                -1.445618,           // Joint 4
+                -0.761017,           // Joint 5
+                +1.976400,            // Joint 6
+                -0.890843             // Joint 7  
+                }};
+    
+    MotionGenerator motion_generator3(speed, q_goal);
 
-    moveToPrinter(robot, speed);
-
-    // Grasp the log -> muss hier noch geändert werden (Weite passt noch nicht)
-    //gripper.grasp(grasping_width, 0.05, 60);
-    gripper.grasp(0.072, 0.05, 20);
-    std::cout << "Log grasped" << std::endl;
-
-    moveFromPrinter(robot, speed);
-    moveToOutput(robot, speed);
-
-// Es kann möglich sein, dass hier noch eine weitere Position eingefügt werden muss, bevor der Gripper geöffnet werden darf...
-
-  // Objekt wird in die "Freiheit" entlassen
-  gripper.move(0.08, 0.01);
-
-  moveToInitialPosition(robot, speed, gripper);
-
-  return true;
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator3);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool moveToStorage(franka::Robot &robot, float speed){
+bool moveToStorage(franka::Robot &robot, float speed){ // Passt
      bool notCorrectPosition = true;
    
     // Erste Position
-    std::array<double, 7> q_goal = 
-              {{+0.255231,            // Joint 1
-                +0.736121,            // Joint 2
-                -2.428646,            // Joint 3
-                -1.240482,           // Joint 4
-                +0.139873,           // Joint 5
-                +2.332304,            // Joint 6
-                +1.511716             // Joint 7  
+/*    std::array<double, 7> q_goal = 
+              {{+0.346378,            // Joint 1
+                +1.459031,            // Joint 2
+                -2.255549,            // Joint 3
+                -1.965658,           // Joint 4
+                +0.089137,           // Joint 5
+                +2.261262,            // Joint 6
+                -1.368361             // Joint 7  
                 }}; 
 
     MotionGenerator motion_generator1(speed, q_goal);
@@ -280,31 +295,31 @@ bool moveToStorage(franka::Robot &robot, float speed){
             robot.control(motion_generator1);
             std::cout << "Moved robot to up position (printer)" << std::endl;
             notCorrectPosition = false;
-        }// Ende TRY
+        }
         catch (const franka::Exception& ex) {
             string exception_string = ex.what();
             if((exception_string.rfind("discontinuity") == string::npos)
                 && (exception_string.find("communication") == string::npos)){
                 throw ex;
-            }// Ende IF
+            }
             else{
                 robot.automaticErrorRecovery();
                 std::cout << "Exception jumped: " << exception_string << std::endl;
-            }// Ende Else
-        }// Ende Catch
-    }//Ende While
+            }
+        }
+    }
 
-  notCorrectPosition = true;
+  notCorrectPosition = true; */
 
 // Hier ne Position um vor dem Regal zu "Schweben"
-    q_goal = 
-              {{-0.107643,            // Joint 1
-                +1.580617,            // Joint 2
-                -1.846718,            // Joint 3
-                -2.296587,           // Joint 4
-                +0.149223,           // Joint 5
-                +2.367729 ,            // Joint 6
-                +1.983285             // Joint 7  
+    std::array<double, 7> q_goal = 
+              {{-0.099726,            // Joint 1
+                +1.237739,            // Joint 2
+                -1.972287,            // Joint 3
+                -2.136524,           // Joint 4
+                +0.355537,           // Joint 5
+                +2.225301,            // Joint 6
+                -1.403869             // Joint 7  
                 }};
   
     MotionGenerator motion_generator3(speed, q_goal);
@@ -314,67 +329,48 @@ bool moveToStorage(franka::Robot &robot, float speed){
             robot.control(motion_generator3);
             std::cout << "Moved robot to up position (printer)" << std::endl;
             notCorrectPosition = false;
-        }//Ende Try
+        }
         catch (const franka::Exception& ex) {
             string exception_string = ex.what();
             if((exception_string.rfind("discontinuity") == string::npos)
                 && (exception_string.find("communication") == string::npos)){
                 throw ex;
-            }//Ende If
+            }
             else{
                 robot.automaticErrorRecovery();
                 std::cout << "Exception jumped: " << exception_string << std::endl;
-            }//Ende Else
-        }//Ende Catch
-    }//Ende Try
+            }
+        }
+    }
     return true;
-}// Ende Funktion
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool findRightSpot(franka::Robot &robot, float speed, int place){
+// Alle 9 Funktionen, die für das Finden des richtigen Lagerplatzes gedacht sind, fahren folgendes Muster:
+// *Von Regal schwebend zu Platz schwebend
+// *Von Platz schwebend zu ablegen/aufnehmen
+// *Von ablegen/aufnehmen zu Platz schwebend
+
+bool findPlaceOne(franka::Robot &robot, float speed){
 
   bool notCorrectPosition = true;
 
-// Nur Beispielimplementierung von q_goal
-        std::array<double, 7> q_goal = 
-              {{-0.413757,            // Joint 1
-                +1.437414,            // Joint 2
-                -2.100041,            // Joint 3
-                -2.084699,           // Joint 4
-                +0.129800,           // Joint 5
-                +2.488492,            // Joint 6
-                +1.722656             // Joint 7  
+     std::array<double, 7> q_goal = 
+              {{-0.516120,            // Joint 1
+                +0.820823,            // Joint 2
+                -1.837487,            // Joint 3
+                -1.347663,           // Joint 4
+                +0.079926,           // Joint 5
+                +1.910257,            // Joint 6
+                -1.434026             // Joint 7  
                 }};
-// Hier die Abfrage
-// wenn 1 - 3: oberes Regal
-//    auf Position des jeweiligen Plates fahren (davor schweben)
-//    auf Ablageposition des Plates fahren und Gripper öffnen
-// wenn 4 - 6: keine Änderung
-//    auf Position des jeweiligen Plates fahren (davor schweben)
-//    auf Ablageposition des Plates fahren und Gripper öffnen
-// wenn 7 - 9: unteres Regal fahren
-//    auf Position des jeweiligen Plates fahren (davor schweben)
-//    auf Ablageposition des Plates fahren und Gripper öffnenbool notCorrectPosition = true;
-   
-
-if (place < 4) {
-// Hier Position für erstes Fach
-        q_goal = 
-              {{-0.416011,            // Joint 1
-                +1.501606,            // Joint 2
-                -2.172211,            // Joint 3
-                -1.987772,           // Joint 4
-                +0.257009,           // Joint 5
-                +2.265558,            // Joint 6
-                +1.620679             // Joint 7  
-                }};
-
-  MotionGenerator motion_generator6(speed, q_goal);
+ 
+  MotionGenerator motion_generator1(speed, q_goal);
 
     while(notCorrectPosition){
         try{
-            robot.control(motion_generator6);
+            robot.control(motion_generator1);
             std::cout << "Moved robot to up position (printer)" << std::endl;
             notCorrectPosition = false;
         }
@@ -392,24 +388,95 @@ if (place < 4) {
     }
 
   notCorrectPosition = true;
-
-  if(place == 1) {
-  // Hier Position für ersten Platz
-    q_goal = 
-              {{-0.763770,            // Joint 1
-                +1.439958,            // Joint 2
-                -2.046877,            // Joint 3
-                -1.620580,           // Joint 4
-                +0.407060,           // Joint 5
-                +2.278924,            // Joint 6
-                +1.663505             // Joint 7  
+              q_goal = 
+              {{-0.632862,            // Joint 1
+                +0.793258,            // Joint 2
+                -1.771385,            // Joint 3
+                -1.542701,           // Joint 4
+                +0.047447,           // Joint 5
+                +2.234886,            // Joint 6
+                -1.452819             // Joint 7  
                 }};
-
-  MotionGenerator motion_generator7(speed, q_goal);
+ 
+  MotionGenerator motion_generator2(speed, q_goal);
 
     while(notCorrectPosition){
         try{
-            robot.control(motion_generator7);
+            robot.control(motion_generator2);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+return true;
+}
+
+bool leavePlaceOne(franka::Robot &robot, float speed){
+  bool notCorrectPosition = true;
+
+     std::array<double, 7> q_goal = 
+              {{-0.516120,            // Joint 1
+                +0.820823,            // Joint 2
+                -1.837487,            // Joint 3
+                -1.347663,           // Joint 4
+                +0.079926,           // Joint 5
+                +1.910257,            // Joint 6
+                -1.434026             // Joint 7  
+                }};
+ 
+  MotionGenerator motion_generator1(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator1);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+return true;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool findPlaceTwo(franka::Robot &robot, float speed){
+
+  bool notCorrectPosition = true;
+
+     std::array<double, 7> q_goal = 
+              {{-0.256274,            // Joint 1
+                +0.859337,            // Joint 2
+                -2.170525,            // Joint 3
+                -1.627315,           // Joint 4
+                +0.280060,           // Joint 5
+                +1.833001,            // Joint 6
+                -1.646919             // Joint 7  
+                }};
+  
+  MotionGenerator motion_generator1(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator1);
             std::cout << "Moved robot to up position (printer)" << std::endl;
             notCorrectPosition = false;
         }
@@ -426,17 +493,15 @@ if (place < 4) {
         }
     }
 
-  }
-  else if(place == 2) {
-  // Hier Position für zweiten Platz
+  notCorrectPosition = true;
     q_goal = 
-              {{-0.622803,            // Joint 1
-                +1.580107,            // Joint 2
-                -2.149075,            // Joint 3
-                -2.024942,           // Joint 4
-                +0.604625,           // Joint 5
-                +2.376974,            // Joint 6
-                +1.410306            // Joint 7  
+              {{-0.347059,            // Joint 1
+                +0.844708,            // Joint 2
+                -2.096429,            // Joint 3
+                -1.847918,           // Joint 4
+                +0.275905,           // Joint 5
+                +2.172136,            // Joint 6
+                -1.712208            // Joint 7  
                 }};
 
     MotionGenerator motion_generator7(speed, q_goal);
@@ -459,17 +524,90 @@ if (place < 4) {
             }
         }
     }
-  }
-  else{
-  // Hier Position für dritten Platz
+return true;
+}
+
+bool leavePlaceTwo(franka::Robot &robot, float speed){
+  bool notCorrectPosition = true;
+
+     std::array<double, 7> q_goal = 
+              {{-0.256274,            // Joint 1
+                +0.859337,            // Joint 2
+                -2.170525,            // Joint 3
+                -1.627315,           // Joint 4
+                +0.280060,           // Joint 5
+                +1.833001,            // Joint 6
+                -1.646919             // Joint 7  
+                }};
+ 
+  MotionGenerator motion_generator1(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator1);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+return true;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool findPlaceThree(franka::Robot &robot, float speed){
+
+  bool notCorrectPosition = true;
+
+     std::array<double, 7> q_goal = 
+              {{-0.000185,            // Joint 1
+                +0.976473,            // Joint 2
+                -2.466721,            // Joint 3
+                -1.934626,           // Joint 4
+                +0.272974,           // Joint 5
+                +1.871381,            // Joint 6
+                -1.827909             // Joint 7  
+                }};
+  
+  MotionGenerator motion_generator1(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator1);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+
+  notCorrectPosition = true;
     q_goal = 
-              {{-0.46254,            // Joint 1
-                +1.619764,            // Joint 2
-                -2.220176,            // Joint 3
-                -2.345686,           // Joint 4
-                +0.597662,           // Joint 5
-                +2.483568,            // Joint 6
-                +1.273108            // Joint 7  
+              {{-0.089205,            // Joint 1
+                +0.927569,            // Joint 2
+                -2.378265,            // Joint 3
+                -2.144840,           // Joint 4
+                +0.262268,           // Joint 5
+                +2.235057,            // Joint 6
+                -1.830189            // Joint 7  
                 }};
  
 MotionGenerator motion_generator7(speed, q_goal);
@@ -492,19 +630,762 @@ MotionGenerator motion_generator7(speed, q_goal);
             }
         }
     }  
+return true;
+}
+
+void leavePlaceThree(franka::Robot &robot, float speed){
+  bool notCorrectPosition = true;
+
+     std::array<double, 7> q_goal = 
+              {{-0.000185,            // Joint 1
+                +0.976473,            // Joint 2
+                -2.466721,            // Joint 3
+                -1.934626,           // Joint 4
+                +0.272974,           // Joint 5
+                +1.871381,            // Joint 6
+                -1.827909             // Joint 7  
+                }};
+ 
+  MotionGenerator motion_generator1(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator1);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool findPlaceSeven(franka::Robot &robot, float speed){
+
+  bool notCorrectPosition = true;
+
+     std::array<double, 7> q_goal = 
+              {{-0.428316,            // Joint 1
+                +1.122033,            // Joint 2
+                -1.603507,            // Joint 3
+                -1.884648,           // Joint 4
+                +0.362244,           // Joint 5
+                +2.221434,            // Joint 6
+                -1.200215             // Joint 7  
+                }};
+ 
+  MotionGenerator motion_generator1(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator1);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+
+  notCorrectPosition = true;
+    q_goal = 
+              {{-0.663267,            // Joint 1
+                +1.130119,            // Joint 2
+                -1.470890,            // Joint 3
+                -1.948712,           // Joint 4
+                +0.512178,           // Joint 5
+                +2.588224,            // Joint 6
+                -1.428654             // Joint 7  
+                }};
+ 
+MotionGenerator motion_generator7(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator7);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+return true;
+}
+
+bool leavePlaceSeven(franka::Robot &robot, float speed){
+  bool notCorrectPosition = true;
+
+     std::array<double, 7> q_goal = 
+              {{-0.428316,            // Joint 1
+                +1.122033,            // Joint 2
+                -1.603507,            // Joint 3
+                -1.884648,           // Joint 4
+                +0.362244,           // Joint 5
+                +2.221434,            // Joint 6
+                -1.200215             // Joint 7  
+                }};
+ 
+  MotionGenerator motion_generator1(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator1);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool findPlaceEight(franka::Robot &robot, float speed){
+
+  bool notCorrectPosition = true;
+
+     std::array<double, 7> q_goal = 
+              {{-0.145144,            // Joint 1
+                +1.120037,            // Joint 2
+                -1.758764,            // Joint 3
+                -2.318438,           // Joint 4
+                +0.466797,           // Joint 5
+                +2.419395,            // Joint 6
+                -1.436929             // Joint 7  
+                }};
+
+  MotionGenerator motion_generator1(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator1);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+
+  notCorrectPosition = true;
+    q_goal = 
+              {{-0.391746,            // Joint 1
+                +1.030484,            // Joint 2
+                -1.582915,            // Joint 3
+                -2.403232,           // Joint 4
+                +0.616726,           // Joint 5
+                +2.841888,            // Joint 6
+                -1.605796             // Joint 7  
+                }};
+ 
+MotionGenerator motion_generator7(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator7);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+
+return true;
+}
+
+bool leavePlaceEight(franka::Robot &robot, float speed){
+  bool notCorrectPosition = true;
+
+     std::array<double, 7> q_goal = 
+              {{-0.145144,            // Joint 1
+                +1.120037,            // Joint 2
+                -1.758764,            // Joint 3
+                -2.318438,           // Joint 4
+                +0.466797,           // Joint 5
+                +2.419395,            // Joint 6
+                -1.436929             // Joint 7  
+                }};
+ 
+  MotionGenerator motion_generator1(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator1);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+return true;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool findPlaceNine(franka::Robot &robot, float speed){
+
+  bool notCorrectPosition = true;
+
+     std::array<double, 7> q_goal = 
+              {{+0.222048,            // Joint 1
+                +1.211415,            // Joint 2
+                -2.023364,            // Joint 3
+                -2.721475,           // Joint 4
+                +0.524792,           // Joint 5
+                +2.463421,            // Joint 6
+                -1.656938             // Joint 7  
+                }};
+ 
+  MotionGenerator motion_generator1(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator1);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+
+  notCorrectPosition = true;
+    q_goal = 
+              {{-0.174449,            // Joint 1
+                +1.002473,            // Joint 2
+                -1.725353,            // Joint 3
+                -2.705326,           // Joint 4
+                +0.615969,           // Joint 5
+                +2.954883,            // Joint 6
+                -1.709142             // Joint 7  
+                }};
+ 
+MotionGenerator motion_generator7(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator7);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+
+
+return true;
+}
+
+void leavePlaceNine(franka::Robot &robot, float speed){
+  bool notCorrectPosition = true;
+
+     std::array<double, 7> q_goal = 
+              {{+0.222048,            // Joint 1
+                +1.211415,            // Joint 2
+                -2.023364,            // Joint 3
+                -2.721475,           // Joint 4
+                +0.524792,           // Joint 5
+                +2.463421,            // Joint 6
+                -1.656938             // Joint 7  
+                }};
+ 
+  MotionGenerator motion_generator1(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator1);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool findPlaceFour(franka::Robot &robot, float speed){
+
+  bool notCorrectPosition = true;
+
+     std::array<double, 7> q_goal = 
+              {{-0.427535,            // Joint 1
+                +0.979701,            // Joint 2
+                -1.802566,            // Joint 3
+                -1.729782,           // Joint 4
+                +0.396360,           // Joint 5
+                +2.114495,            // Joint 6
+                -1.510005             // Joint 7  
+                }};
+ 
+  MotionGenerator motion_generator1(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator1);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+
+  notCorrectPosition = true;
+    q_goal = 
+              {{-0.581477,            // Joint 1
+                +1.065810,            // Joint 2
+                -1.718917,            // Joint 3
+                -1.883813,           // Joint 4
+                +0.380246,           // Joint 5
+                +2.482093,            // Joint 6
+                -1.476558             // Joint 7  
+                }};
+
+MotionGenerator motion_generator7(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator7);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+
+
+return true;
+}
+
+void leavePlaceFour(franka::Robot &robot, float speed){
+  bool notCorrectPosition = true;
+
+     std::array<double, 7> q_goal = 
+              {{-0.427535,            // Joint 1
+                +0.979701,            // Joint 2
+                -1.802566,            // Joint 3
+                -1.729782,           // Joint 4
+                +0.396360,           // Joint 5
+                +2.114495,            // Joint 6
+                -1.510005             // Joint 7  
+                }};
+ 
+  MotionGenerator motion_generator1(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator1);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool findPlaceFive(franka::Robot &robot, float speed){
+
+  bool notCorrectPosition = true;
+
+     std::array<double, 7> q_goal = 
+              {{-0.064589,            // Joint 1
+                +1.006084,            // Joint 2
+                -2.079785,            // Joint 3
+                -2.105988,           // Joint 4
+                +0.302475,           // Joint 5
+                +2.155265,            // Joint 6
+                -1.555202             // Joint 7  
+                }};
+ 
+  MotionGenerator motion_generator1(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator1);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+
+  notCorrectPosition = true;
+    q_goal = 
+              {{-0.295086,            // Joint 1
+                +0.921615,            // Joint 2
+                -1.920725,            // Joint 3
+                -2.197950,           // Joint 4
+                +0.302841,           // Joint 5
+                +2.526494,            // Joint 6
+                -1.580266             // Joint 7  
+                }};
+   
+MotionGenerator motion_generator7(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator7);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+
+return true;
+}
+
+void leavePlaceFive(franka::Robot &robot, float speed){
+  bool notCorrectPosition = true;
+
+     std::array<double, 7> q_goal = 
+              {{-0.064589,            // Joint 1
+                +1.006084,            // Joint 2
+                -2.079785,            // Joint 3
+                -2.105988,           // Joint 4
+                +0.302475,           // Joint 5
+                +2.155265,            // Joint 6
+                -1.555202             // Joint 7  
+                }};
+ 
+  MotionGenerator motion_generator1(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator1);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool findPlaceSix(franka::Robot &robot, float speed){
+
+  bool notCorrectPosition = true;
+
+     std::array<double, 7> q_goal = 
+              {{+0.192788 ,            // Joint 1
+                +1.172721,            // Joint 2
+                -2.325774,            // Joint 3
+                -2.439877,           // Joint 4
+                +0.263223,           // Joint 5
+                +2.199010,            // Joint 6
+                -1.698004             // Joint 7  
+                }};
+
+  MotionGenerator motion_generator1(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator1);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+
+  notCorrectPosition = true;
+    q_goal = 
+              {{-0.034831,            // Joint 1
+                +1.023587,            // Joint 2
+                -2.185950,            // Joint 3
+                -2.526037,           // Joint 4
+                +0.361866,           // Joint 5
+                +2.577958,            // Joint 6
+                -1.790957             // Joint 7  
+                }};
+  
+MotionGenerator motion_generator7(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator7);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+
+return true;
+}
+
+void leavePlaceSix(franka::Robot &robot, float speed){
+  bool notCorrectPosition = true;
+
+     std::array<double, 7> q_goal = 
+              {{+0.192788 ,            // Joint 1
+                +1.172721,            // Joint 2
+                -2.325774,            // Joint 3
+                -2.439877,           // Joint 4
+                +0.263223,           // Joint 5
+                +2.199010,            // Joint 6
+                -1.698004             // Joint 7  
+                }};
+ 
+  MotionGenerator motion_generator1(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator1);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool findRightSpot(franka::Robot &robot, float speed, int place){
+
+  bool notCorrectPosition = true;
+
+// Hier die Abfrage
+// wenn 1 - 3: oberes Regal
+//    auf Position des jeweiligen Plates fahren (davor schweben)
+//    auf Ablageposition des Plates fahren und Gripper öffnen
+// wenn 4 - 6: keine Änderung
+//    auf Position des jeweiligen Plates fahren (davor schweben)
+//    auf Ablageposition des Plates fahren und Gripper öffnen
+// wenn 7 - 9: unteres Regal fahren
+//    auf Position des jeweiligen Plates fahren (davor schweben)
+//    auf Ablageposition des Plates fahren und Gripper öffnenbool notCorrectPosition = true;
+   
+
+if (place < 4) {
+// Hier Position für erstes Fach
+        std::array<double, 7> q_goal = 
+              {{-0.202298,            // Joint 1
+                +1.118617,            // Joint 2
+                -2.215788,            // Joint 3
+                -1.792656,           // Joint 4
+                +0.262851,           // Joint 5
+                +1.940611,            // Joint 6
+                -1.581900             // Joint 7  
+                }};
+ 
+  MotionGenerator motion_generator6(speed, q_goal);
+
+    while(notCorrectPosition){
+        try{
+            robot.control(motion_generator6);
+            std::cout << "Moved robot to up position (printer)" << std::endl;
+            notCorrectPosition = false;
+        }
+        catch (const franka::Exception& ex) {
+            string exception_string = ex.what();
+            if((exception_string.rfind("discontinuity") == string::npos)
+                && (exception_string.find("communication") == string::npos)){
+                throw ex;
+            }
+            else{
+                robot.automaticErrorRecovery();
+                std::cout << "Exception jumped: " << exception_string << std::endl;
+            }
+        }
+    }
+
+
+  if(place == 1) {
+    findPlaceOne(robot, speed);
+  }
+  else if(place == 2) {
+  // Hier Position für zweiten Platz
+    findPlaceTwo(robot, speed);
+  }
+  else{
+  // Hier Position für dritten Platz
+    findPlaceThree(robot, speed);
   }
 }
 else if (place > 6) {
 // Hier Position für drittes Fach
-        q_goal = 
-              {{-0.084923 ,            // Joint 1
-                +1.734353,            // Joint 2
-                -1.635213,            // Joint 3
-                -2.358153,           // Joint 4
-                +0.478339,           // Joint 5
-                +2.358477,            // Joint 6
-                +1.970922             // Joint 7  
-                }};    
+  bool notCorrectPosition = true;
+
+        std::array<double, 7> q_goal = 
+              {{-0.087449,            // Joint 1
+                +1.312051,            // Joint 2
+                -1.758231,            // Joint 3
+                -2.331742,           // Joint 4
+                +0.478561,           // Joint 5
+                +2.410676,            // Joint 6
+                -1.306896             // Joint 7  
+                }}; 
 
 MotionGenerator motion_generator6(speed, q_goal);
 
@@ -527,217 +1408,74 @@ MotionGenerator motion_generator6(speed, q_goal);
         }
     }
 
-  notCorrectPosition = true;
-
   if(place == 7) {
-  // Hier Position für erstes Platz
-    q_goal = 
-              {{-0.570026,            // Joint 1
-                +1.698135,            // Joint 2
-                -1.620691,            // Joint 3
-                -1.925982,           // Joint 4
-                +0.512478,           // Joint 5
-                +2.426016,            // Joint 6
-                +1.998905             // Joint 7  
-                }};
-
-
-MotionGenerator motion_generator7(speed, q_goal);
-
-    while(notCorrectPosition){
-        try{
-            robot.control(motion_generator7);
-            std::cout << "Moved robot to up position (printer)" << std::endl;
-            notCorrectPosition = false;
-        }
-        catch (const franka::Exception& ex) {
-            string exception_string = ex.what();
-            if((exception_string.rfind("discontinuity") == string::npos)
-                && (exception_string.find("communication") == string::npos)){
-                throw ex;
-            }
-            else{
-                robot.automaticErrorRecovery();
-                std::cout << "Exception jumped: " << exception_string << std::endl;
-            }
-        }
-    }
+    findPlaceSeven(robot, speed);  
 
   }
   else if(place == 8) {
-  // Hier Position für zweites Platz
-    q_goal = 
-              {{-0.330804,            // Joint 1
-                +1.698171,            // Joint 2
-                -1.550879,            // Joint 3
-                -2.334420,           // Joint 4
-                +0.580390,           // Joint 5
-                +2.593001,            // Joint 6
-                +1.925377             // Joint 7  
-                }};
+    findPlaceEight(robot, speed);
 
-    MotionGenerator motion_generator7(speed, q_goal);
-
-    while(notCorrectPosition){
-        try{
-            robot.control(motion_generator7);
-            std::cout << "Moved robot to up position (printer)" << std::endl;
-            notCorrectPosition = false;
-        }
-        catch (const franka::Exception& ex) {
-            string exception_string = ex.what();
-            if((exception_string.rfind("discontinuity") == string::npos)
-                && (exception_string.find("communication") == string::npos)){
-                throw ex;
-            }
-            else{
-                robot.automaticErrorRecovery();
-                std::cout << "Exception jumped: " << exception_string << std::endl;
-            }
-        }
-    }
   }
   else{
-  // Hier Position für drittes Platz
-    q_goal = 
-              {{-0.093650,            // Joint 1
-                +1.604140,            // Joint 2
-                -1.493705,            // Joint 3
-                -2.743767,           // Joint 4
-                +0.681858,           // Joint 5
-                +2.784748,            // Joint 6
-                +1.785662            // Joint 7  
-                }}; 
+    findPlaceNine(robot, speed);
 
-    MotionGenerator motion_generator7(speed, q_goal);
-
-    while(notCorrectPosition){
-        try{
-            robot.control(motion_generator7);
-            std::cout << "Moved robot to up position (printer)" << std::endl;
-            notCorrectPosition = false;
-        }
-        catch (const franka::Exception& ex) {
-            string exception_string = ex.what();
-            if((exception_string.rfind("discontinuity") == string::npos)
-                && (exception_string.find("communication") == string::npos)){
-                throw ex;
-            }
-            else{
-                robot.automaticErrorRecovery();
-                std::cout << "Exception jumped: " << exception_string << std::endl;
-            }
-        }
-    }  
   }
 }
 else {
 
   if(place == 4) {
-  // Hier Position für erstes Fach
-        std::array<double, 7> q_goal = 
-              {{-0.702617,            // Joint 1
-                +1.713534,            // Joint 2
-                -1.927999,            // Joint 3
-                -1.829149,           // Joint 4
-                +0.716279,           // Joint 5
-                +2.293291,            // Joint 6
-                +1.646584             // Joint 7  
-                }}; 
-
-    MotionGenerator motion_generator8(speed, q_goal);
-
-    while(notCorrectPosition){
-        try{
-            robot.control(motion_generator8);
-            std::cout << "Moved robot to up position (printer)" << std::endl;
-            notCorrectPosition = false;
-        }
-        catch (const franka::Exception& ex) {
-            string exception_string = ex.what();
-            if((exception_string.rfind("discontinuity") == string::npos)
-                && (exception_string.find("communication") == string::npos)){
-                throw ex;
-            }
-            else{
-                robot.automaticErrorRecovery();
-                std::cout << "Exception jumped: " << exception_string << std::endl;
-            }
-        }
-    }
-
+  findPlaceFour(robot, speed);
   }
   else if(place == 5) {
-  // Hier Position für zweites Fach
-    q_goal = 
-              {{-0.480943,            // Joint 1
-                +1.712293,            // Joint 2
-                -1.890701,            // Joint 3
-                -2.210220,           // Joint 4
-                +0.763592,           // Joint 5
-                +2.440438,            // Joint 6
-                +1.498864             // Joint 7  
-                }};
- 
-    MotionGenerator motion_generator8(speed, q_goal);
-
-    while(notCorrectPosition){
-        try{
-            robot.control(motion_generator8);
-            std::cout << "Moved robot to up position (printer)" << std::endl;
-            notCorrectPosition = false;
-        }
-        catch (const franka::Exception& ex) {
-            string exception_string = ex.what();
-            if((exception_string.rfind("discontinuity") == string::npos)
-                && (exception_string.find("communication") == string::npos)){
-                throw ex;
-            }
-            else{
-                robot.automaticErrorRecovery();
-                std::cout << "Exception jumped: " << exception_string << std::endl;
-            }
-        }
-    }
+  findPlaceFive(robot, speed);
   }
-  else{ //Fach Sechs
-  // Hier Position für drittes Fach
-    q_goal = 
-              {{-0.240080,            // Joint 1
-                +1.719448,            // Joint 2
-                -1.907602,            // Joint 3
-                -2.576539,           // Joint 4
-                +0.800656,           // Joint 5
-                +2.531141,            // Joint 6
-                +1.344329            // Joint 7  
-                }}; 
-
-    MotionGenerator motion_generator8(speed, q_goal);
-
-    while(notCorrectPosition){
-        try{
-            robot.control(motion_generator8);
-            std::cout << "Moved robot to up position (printer)" << std::endl;
-            notCorrectPosition = false;
-        }
-        catch (const franka::Exception& ex) {
-            string exception_string = ex.what();
-            if((exception_string.rfind("discontinuity") == string::npos)
-                && (exception_string.find("communication") == string::npos)){
-                throw ex;
-            }
-            else{
-                robot.automaticErrorRecovery();
-                std::cout << "Exception jumped: " << exception_string << std::endl;
-            }
-        }
-    }  
+  else{
+  findPlaceSix(robot, speed);
   }
 }
 return true;
 }
-//Hier muss noch ein Fehler sein, weil { passt irgendwie nicht...
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool leaveRightSpot(franka::Robot &robot, float speed, int place){
+
+if (place < 4) {
+  if(place == 1) {
+    leavePlaceOne(robot, speed);
+  }
+  else if(place == 2) {
+    leavePlaceTwo(robot, speed);
+  }
+  else{
+    leavePlaceThree(robot, speed);
+  }
+}
+else if (place > 6) {
+  if(place == 7) {
+    leavePlaceSeven(robot, speed);  
+  }
+  else if(place == 8) {
+    leavePlaceEight(robot, speed);
+  }
+  else{
+    leavePlaceNine(robot, speed);
+  }
+}
+else {
+
+  if(place == 4) {
+  leavePlaceFour(robot, speed);
+  }
+  else if(place == 5) {
+  leavePlaceFive(robot, speed);
+  }
+  else{
+  leavePlaceSix(robot, speed);
+  }
+}
+return true;
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -745,27 +1483,16 @@ bool moveFromStorage(franka::Robot &robot, float speed, int place){
 
   bool notCorrectPosition = true;
 
-std::array<double, 7> q_goal = 
-              {{-0.107643,            // Joint 1
-                +1.580617,            // Joint 2
-                -1.846718,            // Joint 3
-                -2.296587,           // Joint 4
-                +0.149223,           // Joint 5
-                +2.367729 ,            // Joint 6
-                +1.983285             // Joint 7  
-                }};
-
-
 if (place < 4) {
 // Hier Position für erstes Fach
-        q_goal = 
-              {{-0.416011,            // Joint 1
-                +1.501606,            // Joint 2
-                -2.172211,            // Joint 3
-                -1.987772,           // Joint 4
-                +0.257009,           // Joint 5
-                +2.265558,            // Joint 6
-                +1.620679             // Joint 7  
+        std::array<double, 7> q_goal=
+              {{-0.202298,            // Joint 1
+                +1.118617,            // Joint 2
+                -2.215788,            // Joint 3
+                -1.792656,           // Joint 4
+                +0.262851,           // Joint 5
+                +1.940611,            // Joint 6
+                -1.581900             // Joint 7  
                 }};
 
   MotionGenerator motion_generator6(speed, q_goal);
@@ -792,15 +1519,15 @@ notCorrectPosition = true;
 }
 else if (place > 6) {
 // Hier Position für drittes Fach
-        q_goal = 
-              {{-0.084923 ,            // Joint 1
-                +1.734353,            // Joint 2
-                -1.635213,            // Joint 3
-                -2.358153,           // Joint 4
-                +0.478339,           // Joint 5
-                +2.358477,            // Joint 6
-                +1.970922             // Joint 7  
-                }};    
+    std::array<double, 7> q_goal=
+              {{-0.087449,            // Joint 1
+                +1.312051,            // Joint 2
+                -1.758231,            // Joint 3
+                -2.331742,           // Joint 4
+                +0.478561,           // Joint 5
+                +2.410676,            // Joint 6
+                -1.306896             // Joint 7  
+                }};     
 
 MotionGenerator motion_generator6(speed, q_goal);
 
@@ -826,16 +1553,15 @@ MotionGenerator motion_generator6(speed, q_goal);
   notCorrectPosition = true;
 }
 
-
 // In Schwebeposition zurück fahren
-           q_goal = 
-              {{-0.107643,            // Joint 1
-                +1.580617,            // Joint 2
-                -1.846718,            // Joint 3
-                -2.296587,           // Joint 4
-                +0.149223,           // Joint 5
-                +2.367729 ,            // Joint 6
-                +1.983285             // Joint 7  
+    std::array<double, 7> q_goal= 
+              {{-0.099726,            // Joint 1
+                +1.237739,            // Joint 2
+                -1.972287,            // Joint 3
+                -2.136524,           // Joint 4
+                +0.355537,           // Joint 5
+                +2.225301,            // Joint 6
+                -1.403869             // Joint 7  
                 }};
 
     MotionGenerator motion_generator1(speed, q_goal);
@@ -845,31 +1571,30 @@ MotionGenerator motion_generator6(speed, q_goal);
             robot.control(motion_generator1);
             std::cout << "Moved robot to up position (printer)" << std::endl;
             notCorrectPosition = false;
-        } //Ende Try
+        }
         catch (const franka::Exception& ex) {
             string exception_string = ex.what();
             if((exception_string.rfind("discontinuity") == string::npos)
                 && (exception_string.find("communication") == string::npos)){
                 throw ex;
-            } //Ende If
+            }
             else{
                 robot.automaticErrorRecovery();
                 std::cout << "Exception jumped: " << exception_string << std::endl;
-            }// Ende Else
-        }// Ende Catch
-    }// Ende While
+            }
+        }
+    }
 
-  notCorrectPosition = true;
+/*  notCorrectPosition = true;
 
-// In Sicherheitsposition 2 zurück fahren
     q_goal = 
-              {{+0.697996,            // Joint 1
-                +1.725434,            // Joint 2
-                -1.798190,            // Joint 3
-                -2.389757,           // Joint 4
-                +0.166944,           // Joint 5
-                +2.365814,            // Joint 6
-                +2.023952             // Joint 7 
+              {{+0.346378,            // Joint 1
+                +1.459031,            // Joint 2
+                -2.255549,            // Joint 3
+                -1.965658,           // Joint 4
+                +0.089137,           // Joint 5
+                +2.261262,            // Joint 6
+                -1.368361             // Joint 7  
                 }};
     MotionGenerator motion_generator2(speed, q_goal);    
     
@@ -890,54 +1615,44 @@ MotionGenerator motion_generator6(speed, q_goal);
                 std::cout << "Exception jumped: " << exception_string << std::endl;
             }// Ende Else
         }//Ende Catch
-    }// Ende While
+    }// Ende While */
 
-  notCorrectPosition = true;
-
-// In Sicherheitsposition 1 zurück fahren
-
-    // Erste Position
-   q_goal = 
-              {{+0.255231,            // Joint 1
-                +0.736121,            // Joint 2
-                -2.428646,            // Joint 3
-                -1.240482,           // Joint 4
-                +0.139873,           // Joint 5
-                +2.332304,            // Joint 6
-                +1.511716             // Joint 7  
-                }}; 
-
-    MotionGenerator motion_generator3(speed, q_goal);
-
-    while(notCorrectPosition){
-        try{
-            robot.control(motion_generator3);
-            std::cout << "Moved robot to up position (printer)" << std::endl;
-            notCorrectPosition = false;
-        }//Ende Try
-        catch (const franka::Exception& ex) {
-            string exception_string = ex.what();
-            if((exception_string.rfind("discontinuity") == string::npos)
-                && (exception_string.find("communication") == string::npos)){
-                throw ex;
-            }//Ende if
-            else{
-                robot.automaticErrorRecovery();
-                std::cout << "Exception jumped: " << exception_string << std::endl;
-            }//Ende Else
-        }//Ende Catch
-    }//Ende While
 return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool getBlockFromPrinterToOutput(franka::Robot &robot, float speed, float grasping_width, franka::Gripper &gripper){
+
+    moveToPrinter(robot, speed);
+
+    // Grasp the log -> muss hier noch geändert werden (Weite passt noch nicht)
+    //gripper.grasp(grasping_width, 0.05, 60);
+    gripper.grasp(grasping_width, 0.05, 20);
+    std::cout << "Log grasped" << std::endl;
+
+    moveFromPrinter(robot, speed);
+    moveToOutput(robot, speed);
+
+// Es kann möglich sein, dass hier noch eine weitere Position eingefügt werden muss, bevor der Gripper geöffnet werden darf...
+
+  // Objekt wird in die "Freiheit" entlassen
+  gripper.stop();  
+  gripper.move(0.08, 0.01);
+  moveFromOutput(robot, speed);
+
+  moveToInitialPosition(robot, speed, gripper);
+
+  return true;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool getBlockFromPrinterToStorage(franka::Robot &robot, float speed, float grasping_width, franka::Gripper &gripper, int place){
     
     moveToPrinter(robot, speed);
 
     // Grasp the log -> muss hier noch geändert werden (Weite passt noch nicht)
-    gripper.grasp(0.072, 0.4, 60);
+    gripper.grasp(grasping_width, 0.4, 60);
     std::cout << "Log grasped" << std::endl;
 
     moveFromPrinter(robot, speed);
@@ -946,10 +1661,10 @@ bool getBlockFromPrinterToStorage(franka::Robot &robot, float speed, float grasp
 
     gripper.stop();
     gripper.move(0.08, 0.1); 
-    
+    leaveRightSpot(robot, speed, place);    
+
     moveFromStorage(robot, speed, place);
 
-// Zurück in die Ausgangsposition
     moveToInitialPosition(robot, speed, gripper);
 
   return true;
@@ -963,18 +1678,18 @@ bool getBlockFromStorageToOutput(franka::Robot &robot, float speed, float graspi
   findRightSpot(robot, speed, place);
 
     // Grasp the log -> muss hier noch geändert werden (Weite passt noch nicht)
-    gripper.grasp(0.072, 0.4, 60);
+    gripper.grasp(grasping_width, 0.4, 60);
     std::cout << "Log grasped" << std::endl;
 
+  leaveRightSpot(robot, speed, place);
   moveFromStorage(robot, speed, place);
   moveToOutput(robot, speed);
-
-// Es kann möglich sein, dass hier noch eine weitere Position eingefügt werden muss, bevor der Gripper geöffnet werden darf...
 
   // Objekt wird in die "Freiheit" entlassen
   gripper.stop();  
   gripper.move(0.08, 0.1);
 
+  moveFromOutput(robot, speed);
   moveToInitialPosition(robot, speed, gripper);
 
   return true;
@@ -989,8 +1704,12 @@ int main(int argc, char** argv) {
   }
   
   franka::Robot robot(argv[1]);
-  float speed = 0.04;
-  float grasping_width = 0.072;
+  float speed = 0.1;
+  float grasping_width = 0.044;
+  
+  // Soll im weiteren Verlauf individuell geändert werden
+  int place = 5;
+
   franka::Gripper gripper(argv[1]);
 
     std::cout << "WARNING: This example will move the robot! "
@@ -1023,10 +1742,17 @@ int main(int argc, char** argv) {
 
     //getBlockFromPrinterToOutput(robot, speed, grasping_width, gripper);
     
-    int place = 1;
-    // Wenn Place dann via Input angegeben wird, muss hier eine Sicherheitsfunktion durchgeführt werden (Value 1- 9)
-    //getBlockFromPrinterToStorage(robot, speed, grasping_width, gripper, place);
-    getBlockFromStorageToOutput(robot, speed, grasping_width, gripper, place);
+    //Wenn Place dann via Input angegeben wird, muss hier eine Sicherheitsfunktion durchgeführt werden (Value 1- 9)
+    if(!(place < 1 && place > 10)){
+      getBlockFromPrinterToStorage(robot, speed, grasping_width, gripper, place);
+      //getBlockFromStorageToOutput(robot, speed, grasping_width, gripper, place);
+    }
+// Nur zum Evaluieren notwendig (die unteren fünf Funktionen)
+    //moveToStorage(robot, speed);
+    //findRightSpot(robot, speed, place);
+    //leaveRightSpot(robot, speed, place);
+    //moveFromStorage(robot, speed, place);
+    //moveToInitialPosition(robot, speed, gripper);
 
 }
   catch (const franka::Exception& ex) {
