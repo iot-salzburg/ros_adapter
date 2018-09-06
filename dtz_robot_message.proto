@@ -1,0 +1,7 @@
+package prototest;
+
+message RobotMessage {
+    required int32 id = 1;
+    required string state = 2;
+    optional string opt = 3;
+}
