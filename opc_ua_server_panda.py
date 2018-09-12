@@ -25,16 +25,6 @@ robot_message = RobotMessage()
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind(("127.0.0.1", 5555))
 
-#result = robot_process.communicate()
-#print(result)
-
-#robot_ip = "192.168.13.1"
-#movement = "PO"
-#place = "2"
-#print("in outer function")
-#robot_process = subprocess.Popen(["./kick_off_event_x" , robot_ip, movement, place])
-
-
 
 @uamethod
 def move_robot(parent, movement, place):
@@ -89,8 +79,6 @@ if __name__ == "__main__":
         # Assign random values to the parameters
         print("going into loop")
         
-
-
         while True:
             TIME = datetime.datetime.now()  # current time
 
