@@ -56,13 +56,13 @@ if __name__ == "__main__":
     objects = server.get_objects_node()
 
     # Add a parameter object to the address space
-    object1 = objects.add_object(idx, "Object1")
+    robot_object = objects.add_object(idx, "PandaRobot")
 
     # Parameters - Addresspsace, Name, Initial Value
-    server_time = object1.add_variable(idx, "ServerTime", 0)
-    mover = object1.add_method(idx, "MoveRobot", move_robot, [ua.VariantType.String, ua.VariantType.String], [ua.VariantType.Boolean])
-    robot_state = object1.add_variable(idx, "RobotState", "init")
-    #var = object1.add_variable(idx, "Var", 0.0)
+    server_time = robot_object.add_variable(idx, "ServerTime", 0)
+    mover = robot_object.add_method(idx, "MoveRobot", move_robot, [ua.VariantType.String, ua.VariantType.String], [ua.VariantType.Boolean])
+    robot_state = robot_object.add_variable(idx, "RobotState", "init")
+    #var = robot_object.add_variable(idx, "Var", 0.0)
 
     # Set parameters writable by clients
     #server_time.set_writable()
