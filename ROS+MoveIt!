@@ -1,5 +1,4 @@
-// Es handelt sich hierbei um ein Beispielprogramm. Dieses ist in keiner Art und Weise auch nur ansatzweise optimiert.
-// Es sollten hier Funktionen inkludiert werden, die den Workflow erleichtern und somit dem Code an Komplexität nehmen
+// Das Programm wurde noch nicht optimiert bzw. für OPC-UA (siehe Kick_Off_Event_X) angepasst. Dies muss noch nachgeholt werden.
 
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
