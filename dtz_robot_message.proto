@@ -3,7 +3,7 @@ package pandaproto;
 message RobotMessage {
     required int32 id = 1;
     required string state = 2;
-    required string moving = 3;
+    required bool moving = 3;
     optional int32 temperature =4;
     optional string opt1 = 5;
     optional string opt2 = 6;    
