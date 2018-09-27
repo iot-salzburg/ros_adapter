@@ -1,4 +1,4 @@
-package panda_proto;
+package pandaproto;
 
 message RobotMessage {
     required int32 id = 1;
