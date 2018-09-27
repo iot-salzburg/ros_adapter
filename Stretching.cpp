@@ -25,12 +25,15 @@
 #include <cstdlib>
 
 #include <thread>
+#include <sys/socket.h>
+#include <arpa/inet.h>
 
 #include "dtz_robot_message.pb.h"
 #include "dtz_robot_message.pb.cc"
 
-std::string global_state{};
-std::string global_moving{};
+std::string global_state{"none"};
+bool global_moving{false};
+int global_temperature;
 
 
 namespace rvt = rviz_visual_tools;
@@ -55,10 +58,10 @@ void protocom(){
     // Set instance members
     robot_message.set_id(1);
     robot_message.set_state("init");
-    robot_message.set_moving(false)
-    robot_message.set_temperature(global_temperature)   // Int32
-    robot_message.set_opt1("none")                      // String
-    robot_message.set_opt2("none")                      // String
+    robot_message.set_moving(false);
+    robot_message.set_temperature(global_temperature);    // Int32
+    robot_message.set_opt1("none");                      // String
+    robot_message.set_opt2("none");                      // String
 
     // send via protobuf
     robot_message.SerializeToString(&buf);
@@ -67,6 +70,7 @@ void protocom(){
     int id_counter{0};
     std::string old_state{"none"};
 
+    std::cout << "after init in protobuf thread. " << "state: " << global_state << ". moving: " << global_moving << std::endl;
 
     while(true){
 
@@ -74,7 +78,8 @@ void protocom(){
             // Set instance members
             robot_message.set_id(id_counter);                   // Int32
             robot_message.set_state(global_state);              // String
-            robot_message.set_moving(global_moving)             // Bool
+            robot_message.set_moving(global_moving);            // Bool
+
 
             // send via protobuf
             robot_message.SerializeToString(&buf);
@@ -86,6 +91,7 @@ void protocom(){
         }
 
     }
+    
 }
 
 
@@ -1233,24 +1239,30 @@ int main(int argc, char** argv)
 
         // check if data excange file exists
         // file location: /home/libfranka/ws_moveit
+
+        std::cout << "globals " << global_moving << "   " << global_state << std::endl;
         std::ifstream ifile("./OPCExchangeData.txt");
 
         while(!ifile){
             visual_tools.prompt("Got into the 'File does not exist'-Loop");
             sleep(2);
-            std::ifstream ifile("./OPCExchangeData.txt");
+            ifile.open("./OPCExchangeData.txt");
         }
 
-        ifstream myReadFile;
-        myReadFile.open("./OPCExchangeData.txt");
+        ifile.close();
 
+        std::fstream myReadFile("./OPCExchangeData.txt", std::ios::in | std::ios::out);      
+           
         char output[4];
         if(myReadFile.is_open()){
             while(!myReadFile.eof()){
                 myReadFile >> output;
-                std::cout<< "Output: " << output << std::endl;
+                // std::cout<< "Output: " << output << std::endl;
             }
         }
+        
+        myReadFile >> output;
+        // std::cout<< "Output: " << output << std::endl;
 
         // File-Struktur: csv (PS,1)
         // PO: Printer to Output
@@ -1259,20 +1271,23 @@ int main(int argc, char** argv)
 
         std::string tmpString;
         tmpString.append(output); // needed for substring handling
-        std::cout<<"Temporärer String: " << tmpString<<std::endl;
+        // std::cout<<"Temporärer String: " << tmpString<<std::endl;
 
         // first 2 characters for movement
         movement = tmpString.substr(0,2);
-        std::cout<<"Movement: " << movement<<std::endl;
+        // std::cout<<"Movement: " << movement<<std::endl;
 
         // if needed, fourth character defines storage place
         if(movement.compare("PS") == 0 || movement.compare("SO") == 0){
             place = std::stoi(tmpString.substr(3,1));
-            std::cout<<"Place: " << place<<std::endl;
+            std::cout << "Place: " << place<<std::endl;
 
             // check if place is supported (must be between 1 and 9)
             if(place < 1 || place > 9){
                 std::cout << "Place not supported!" << std::endl;
+                myReadFile.seekg(0, std::ios::beg);
+                myReadFile.clear();
+                myReadFile << "XX";
                 myReadFile.close();
                 // ERST UNKOMMENTIEREN, WENN WIRKLICH ALLES CHILLIG (WEG-)LÄUFT *HAHA*
                 //remove("./OPCExchangeData.txt");
@@ -1280,11 +1295,15 @@ int main(int argc, char** argv)
                 continue;
             }
         }
-
+        
+        myReadFile.clear();
+        myReadFile.seekg(0, std::ios::beg);
+        myReadFile << "XX";
         myReadFile.close();
 
         // remove file --> recreated by OPC-UA client when input needed
         // ERST UNKOMMENTIEREN, WENN WIRKLICH ALLES CHILLIG (WEG-)LÄUFT *HAHA*
+        
         //remove("./OPCExchangeData.txt");
 
 
@@ -1310,3 +1329,4 @@ int main(int argc, char** argv)
     ros::shutdown();
     return 0;
 }
+
