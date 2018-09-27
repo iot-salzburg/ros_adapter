@@ -1,7 +1,10 @@
-package prototest;
+package panda_proto;
 
 message RobotMessage {
     required int32 id = 1;
     required string state = 2;
-    optional string opt = 3;
+    required string moving = 3;
+    optional int32 temperature =4;
+    optional string opt1 = 5;
+    optional string opt2 = 6;    
 }
