@@ -20,6 +20,7 @@
 #include <actionlib/client/terminal_state.h>
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
 #include <cstdlib>
@@ -33,7 +34,7 @@
 
 std::string global_state{"none"};
 bool global_moving{false};
-int global_temperature;
+int global_temperature{0};
 
 
 namespace rvt = rviz_visual_tools;
@@ -70,11 +71,12 @@ void protocom(){
     int id_counter{0};
     std::string old_state{"none"};
 
-    std::cout << "after init in protobuf thread. " << "state: " << global_state << ". moving: " << global_moving << std::endl;
-
     while(true){
 
         if (old_state != global_state){
+
+            std::cout << "global_state: " << global_state << std::boolalpha << ". global_moving: " << global_moving << std::endl;
+
             // Set instance members
             robot_message.set_id(id_counter);                   // Int32
             robot_message.set_state(global_state);              // String
@@ -91,7 +93,7 @@ void protocom(){
         }
 
     }
-    
+
 }
 
 
@@ -1230,7 +1232,7 @@ int main(int argc, char** argv)
 
     // Start protobuf communication thread
     std::thread protocom_thread (protocom);
-
+    std::cout << "global_state: " << global_state << std::boolalpha << ". global_moving: " << global_moving << std::endl;
 
     std::string movement;
     int place;
@@ -1251,8 +1253,8 @@ int main(int argc, char** argv)
 
         ifile.close();
 
-        std::fstream myReadFile("./OPCExchangeData.txt", std::ios::in | std::ios::out);      
-           
+        std::fstream myReadFile("./OPCExchangeData.txt", std::ios::in | std::ios::out);
+
         char output[4];
         if(myReadFile.is_open()){
             while(!myReadFile.eof()){
@@ -1260,7 +1262,7 @@ int main(int argc, char** argv)
                 // std::cout<< "Output: " << output << std::endl;
             }
         }
-        
+
         myReadFile >> output;
         // std::cout<< "Output: " << output << std::endl;
 
@@ -1295,7 +1297,7 @@ int main(int argc, char** argv)
                 continue;
             }
         }
-        
+
         myReadFile.clear();
         myReadFile.seekg(0, std::ios::beg);
         myReadFile << "XX";
@@ -1303,7 +1305,7 @@ int main(int argc, char** argv)
 
         // remove file --> recreated by OPC-UA client when input needed
         // ERST UNKOMMENTIEREN, WENN WIRKLICH ALLES CHILLIG (WEG-)LÄUFT *HAHA*
-        
+
         //remove("./OPCExchangeData.txt");
 
 
@@ -1329,4 +1331,3 @@ int main(int argc, char** argv)
     ros::shutdown();
     return 0;
 }
-
