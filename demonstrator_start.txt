@@ -1,0 +1,13 @@
+roslaunch franka_control franka_control.launch robot_ip:=192.168.13.1
+
+roslaunch franka_gripper franka_gripper.launch robot_ip:=192.168.13.1
+
+roslaunch panda_moveit_config panda_moveit.launch
+
+roslaunch panda_moveit_config moveit_rviz.launch
+
+source ~/ws_moveit/devel/setup.bash
+rosrun niks_experiments Stretching
+
+Im Rviz Fenster -> obere Leiste "Panel" -> Add New Panel -> RvizVisualToolsgui (OK Drücken, nicht doppelklick)
+Dann unten auf "Continue"
