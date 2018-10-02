@@ -1,10 +1,10 @@
-package pandaproto;
+
+syntax = "proto2";
+package protopanda;
+
 
 message RobotMessage {
-    required int32 id = 1;
-    required string state = 2;
-    required bool moving = 3;
-    optional int32 temperature =4;
-    optional string opt1 = 5;
-    optional string opt2 = 6;    
+    optional int32 id = 1;
+    optional string state = 2;
+    optional string moving = 3;
 }
