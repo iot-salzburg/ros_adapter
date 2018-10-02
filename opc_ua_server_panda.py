@@ -21,12 +21,9 @@ import sys
 
 sys.path.insert(0, "..")
 
-robot_message = RobotMessage()
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.bind(("127.0.0.1", 5555))
 
 global_robot_state = None
-global_robot_moving = None
+global_robot_moving = "None"
 
 
 def protocom ():
@@ -34,14 +31,29 @@ def protocom ():
     global global_robot_state
     global global_robot_moving
 
+    # Protobuf Init
+    global_robot_message = RobotMessage()
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.bind(("127.0.0.1", 5555))
+
     while True:
+
+        print("protobuf - waiting to receive")
+        
+        
         # receive protobuf message
-        data, addr = sock.recvfrom(1024)
-        robot_message.ParseFromString(data)
+        data, addr = sock.recvfrom(2048)
+        
+        print("data: " + str(data))
+        
+        global_robot_message.ParseFromString(data)
+        
+
 
         # split the info into global vars
-        global_robot_state = robot_message.state
-        global_robot_moving = robot_message.moving
+        global_robot_state = global_robot_message.state
+        global_robot_moving = global_robot_message.moving
+        print("protobuf - received: " + str(global_robot_message.state) + " and " + str(global_robot_message.moving))
 
 
 @uamethod
@@ -80,7 +92,6 @@ def move_robot_libfranka(parent, movement, place):
 @uamethod
 def move_robot_ros(parent, movement, place):
     robot_ip = "192.168.13.1"
-    print("in function")
 
     with open("/home/panda/libfranka/ws_moveit/OPCExchangeData.txt", "w") as f:
         f.write(movement + "," + place)
@@ -91,9 +102,9 @@ def move_robot_ros(parent, movement, place):
 
 if __name__ == "__main__":
 
-    global_robot_state = None
-    global_robot_moving = None
-
+    global global_robot_state
+    global global_robot_moving
+    
     # robot process object
     p = None
 
@@ -134,6 +145,7 @@ if __name__ == "__main__":
     protocom_thread.daemon = True
     protocom_thread.start()
 
+
     try:
         # Assign random values to the parameters
         print("going into loop")
@@ -143,8 +155,16 @@ if __name__ == "__main__":
 
             # set the random values inside the node
             robot_state.set_value(global_robot_state)
-            robot_moving.set_value(global_robot_moving)
-            print("Robot-State: [" + str(robot_message.id) + "] : " + str(robot_state.get_value()) + ". Server-Time: " + str(server_time.get_value()))
+
+        
+            if global_robot_moving == "true":
+                robot_moving.set_value(True)
+            elif global_robot_moving == "false":
+                robot_moving.set_value(False)
+
+
+            print("gloval_robot_moving is: " + global_robot_moving)
+            #print("Robot-State: [" + str(global_robot_message.id) + "] : " + str(robot_state.get_value()) + ". Server-Time: " + str(server_time.get_value()))
             server_time.set_value(TIME)
             # var.set_value(var2)
 
@@ -162,3 +182,4 @@ if __name__ == "__main__":
         conbelt = None
 
 sys.exit(0)
+
