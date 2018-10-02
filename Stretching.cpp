@@ -1,6 +1,9 @@
 // Es handelt sich hierbei um ein Beispielprogramm. Dieses ist in keiner Art und Weise auch nur ansatzweise optimiert.
 // Es sollten hier Funktionen inkludiert werden, die den Workflow erleichtern und somit dem Code an Komplexität nehmen
 
+//ROS: Mühlberger & Hofer
+//OPC-UA: Niedermüller
+
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 
@@ -32,9 +35,10 @@
 #include "dtz_robot_message.pb.h"
 #include "dtz_robot_message.pb.cc"
 
+
 std::string global_state{"none"};
-bool global_moving{false};
-int global_temperature{0};
+std::string global_moving{"false"};
+int global_temperature;
 
 
 namespace rvt = rviz_visual_tools;
@@ -58,30 +62,32 @@ void protocom(){
 
     // Set instance members
     robot_message.set_id(1);
-    robot_message.set_state("init");
-    robot_message.set_moving(false);
-    robot_message.set_temperature(global_temperature);    // Int32
-    robot_message.set_opt1("none");                      // String
-    robot_message.set_opt2("none");                      // String
+    robot_message.set_state(global_state.c_str());
+    robot_message.set_moving(global_moving.c_str());
+    //robot_message.set_temperature(global_temperature);    // Int32
+    //robot_message.set_opt1("none");                      // String
+    //robot_message.set_opt2("none");                      // String
 
     // send via protobuf
+
     robot_message.SerializeToString(&buf);
     sendto(sock, buf.data(), strlen(buf.c_str()), 0, (struct sockaddr *)&addr, sizeof(addr));
 
     int id_counter{0};
     std::string old_state{"none"};
 
+
     while(true){
 
         if (old_state != global_state){
 
+            // Print out Info 
             std::cout << "global_state: " << global_state << std::boolalpha << ". global_moving: " << global_moving << std::endl;
 
             // Set instance members
-            robot_message.set_id(id_counter);                   // Int32
-            robot_message.set_state(global_state);              // String
-            robot_message.set_moving(global_moving);            // Bool
-
+            robot_message.set_id(1);                   // Int32
+            robot_message.set_state(global_state.c_str());              // String
+            robot_message.set_moving(global_moving.c_str());
 
             // send via protobuf
             robot_message.SerializeToString(&buf);
@@ -93,7 +99,7 @@ void protocom(){
         }
 
     }
-
+    
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1122,7 +1128,7 @@ bool getBlockFromPrinterToOutput(const robot_state::JointModelGroup* joint_model
                                  franka_gripper::StopGoal goalS, franka_gripper::MoveGoal goalM){
 
     // set states for protobuf
-    global_moving = true;
+    global_moving = "true";
     global_state = "moving";
 
     moveToPrinter(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
@@ -1140,7 +1146,7 @@ bool getBlockFromPrinterToOutput(const robot_state::JointModelGroup* joint_model
 
 
     // set states for protobuf
-    global_moving = false;
+    global_moving = "false";
     global_state = "stopped";
 
     return true;
@@ -1155,7 +1161,7 @@ bool getBlockFromPrinterToStorage(const robot_state::JointModelGroup* joint_mode
                                   franka_gripper::StopGoal goalS, franka_gripper::MoveGoal goalM){
 
     // set states for protobuf
-    global_moving = true;
+    global_moving = "true";
     global_state = "moving";
 
     moveToPrinter(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
@@ -1175,7 +1181,7 @@ bool getBlockFromPrinterToStorage(const robot_state::JointModelGroup* joint_mode
     moveToInitialPosition(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
 
     // set states for protobuf
-    global_moving = false;
+    global_moving = "false";
     global_state = "stopped";
 
     return true;
@@ -1191,7 +1197,7 @@ bool getBlockFromStorageToOutput(const robot_state::JointModelGroup* joint_model
                                  franka_gripper::StopGoal goalS, franka_gripper::MoveGoal goalM){
 
     // set states for protobuf
-    global_moving = true;
+    global_moving = "true";
     global_state = "moving";
 
     moveToStorage(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
@@ -1210,7 +1216,7 @@ bool getBlockFromStorageToOutput(const robot_state::JointModelGroup* joint_model
     moveToInitialPosition(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
 
     // set states for protobuf
-    global_moving = false;
+    global_moving = "false";
     global_state = "stopped";
 
     return true;
@@ -1274,6 +1280,8 @@ int main(int argc, char** argv)
 
     // Start protobuf communication thread
     std::thread protocom_thread (protocom);
+
+    // Print out state info
     std::cout << "global_state: " << global_state << std::boolalpha << ". global_moving: " << global_moving << std::endl;
 
     std::string movement;
@@ -1284,7 +1292,6 @@ int main(int argc, char** argv)
         // check if data excange file exists
         // file location: /home/libfranka/ws_moveit
 
-        std::cout << "globals " << global_moving << "   " << global_state << std::endl;
         std::ifstream ifile("./OPCExchangeData.txt");
 
         while(!ifile){
@@ -1295,8 +1302,8 @@ int main(int argc, char** argv)
 
         ifile.close();
 
-        std::fstream myReadFile("./OPCExchangeData.txt", std::ios::in | std::ios::out);
-
+        std::fstream myReadFile("./OPCExchangeData.txt", std::ios::in | std::ios::out);      
+           
         char output[4];
         if(myReadFile.is_open()){
             while(!myReadFile.eof()){
@@ -1304,7 +1311,7 @@ int main(int argc, char** argv)
                 // std::cout<< "Output: " << output << std::endl;
             }
         }
-
+        
         myReadFile >> output;
         // std::cout<< "Output: " << output << std::endl;
 
@@ -1339,7 +1346,7 @@ int main(int argc, char** argv)
                 continue;
             }
         }
-
+        
         myReadFile.clear();
         myReadFile.seekg(0, std::ios::beg);
         myReadFile << "XX";
@@ -1347,7 +1354,7 @@ int main(int argc, char** argv)
 
         // remove file --> recreated by OPC-UA client when input needed
         // ERST UNKOMMENTIEREN, WENN WIRKLICH ALLES CHILLIG (WEG-)LÄUFT *HAHA*
-
+        
         //remove("./OPCExchangeData.txt");
 
 
@@ -1373,3 +1380,4 @@ int main(int argc, char** argv)
     ros::shutdown();
     return 0;
 }
+
