@@ -19,6 +19,38 @@ import socket
 import time
 import sys
 
+import logging
+
+# create logger
+logger = logging.getLogger('opc_ua_server_panda')
+logger.setLevel(logging.DEBUG)
+
+# create console handler and set level to debug
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+
+# create formatter
+formatter = logging.Formatter('%(asctime)s - %(name)s [%(filename)s:%(lineno)d] - %(levelname)s - %(message)s')
+
+# add formatter to ch
+ch.setFormatter(formatter)
+
+
+fh = logging.FileHandler('/var/log/opc_ua_server_panda.log')
+fh.setLevel(logging.DEBUG)
+fh.setFormatter(formatter)
+
+# add ch to logger
+logger.addHandler(ch)
+logger.addHandler(fh)
+
+# 'application' code
+logger.debug('debug message')
+logger.info('info message')
+logger.warn('warn message')
+logger.error('error message')
+logger.critical('critical message')
+
 sys.path.insert(0, "..")
 
 
@@ -38,13 +70,13 @@ def protocom ():
 
     while True:
 
-        print("protobuf - waiting to receive")
+        logger.debug("protobuf - waiting to receive")
         
         
         # receive protobuf message
-        data, addr = sock.recvfrom(2048)
+        data, addr = sock.recvfrom(1024)
         
-        print("data: " + str(data))
+        logger.debug("data: " + str(data))
         
         global_robot_message.ParseFromString(data)
         
@@ -53,19 +85,19 @@ def protocom ():
         # split the info into global vars
         global_robot_state = global_robot_message.state
         global_robot_moving = global_robot_message.moving
-        print("protobuf - received: " + str(global_robot_message.state) + " and " + str(global_robot_message.moving))
+        logger.debug("protobuf - received: " + str(global_robot_message.state) + " and " + str(global_robot_message.moving))
 
 
 @uamethod
 def move_robot_ros(parent,):
-    print("in move robot ros")
+    logger.debug("in move robot ros")
     panda_movement_process = subprocess.Popen(["roslaunch niks_experiments Stretching.launch", ])
 
     return True
 
 @uamethod
 def start_ros(parent,):
-    print("in start ros")
+    logger.debug("in start ros")
     source_devel_process = subprocess.Popen(["source /home/panda/libfranka/ws_moveit/devel/setup.bash", ])
     franka_control_process = subprocess.Popen(["roslaunch franka_control franka_control.launch", "robot_ip:=192.168.13.1"])
     time.sleep(5)
@@ -82,9 +114,9 @@ def start_ros(parent,):
 
 @uamethod
 def move_robot_libfranka(parent, movement, place):
-    print("in move robot libfranka")
+    logger.debug("in move robot libfranka")
     robot_ip = "192.168.13.1"
-    print("in method: " + robot_ip , movement + place)
+    logger.debug("in method: " + robot_ip , movement + place)
     robot_process = subprocess.Popen(["./kick_off_event_x", robot_ip, movement, place])
 
     return True
@@ -138,7 +170,7 @@ if __name__ == "__main__":
     # Start the server
     server.start()
 
-    print("OPC-UA - Panda - Server started at {}".format(url))
+    logger.debug("OPC-UA - Panda - Server started at {}".format(url))
 
     # Start protobuf communication
     protocom_thread = threading.Thread(name='protobuf_com_thread', target=protocom, args=())
@@ -148,23 +180,25 @@ if __name__ == "__main__":
 
     try:
         # Assign random values to the parameters
-        print("going into loop")
+        logger.debug("going into loop")
 
         while True:
             TIME = datetime.datetime.now()  # current time
 
             # set the random values inside the node
+            logger.debug("set robot state to %s", global_robot_state)
             robot_state.set_value(global_robot_state)
 
         
+            logger.debug("set robot moving value to %s", global_robot_moving)
             if global_robot_moving == "true":
                 robot_moving.set_value(True)
             elif global_robot_moving == "false":
                 robot_moving.set_value(False)
 
 
-            print("gloval_robot_moving is: " + global_robot_moving)
-            #print("Robot-State: [" + str(global_robot_message.id) + "] : " + str(robot_state.get_value()) + ". Server-Time: " + str(server_time.get_value()))
+            logger.debug("gloval_robot_moving is: %s", global_robot_moving)
+            #logger.debug("Robot-State: [" + str(global_robot_message.id) + "] : " + str(robot_state.get_value()) + ". Server-Time: " + str(server_time.get_value()))
             server_time.set_value(TIME)
             # var.set_value(var2)
 
@@ -172,7 +206,7 @@ if __name__ == "__main__":
             time.sleep(2)
 
     except KeyboardInterrupt:
-        print("\nCtrl-C pressed. OPCUA - Pixtend - Server stopped at {}".format(url))
+        logger.debug("\nCtrl-C pressed. OPCUA - Pixtend - Server stopped at {}".format(url))
 
     finally:
         # close connection, remove subscriptions, etc
