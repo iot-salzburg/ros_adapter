@@ -364,15 +364,15 @@ bool findPlaceOne(const robot_state::JointModelGroup* joint_model_group,
     current_state->copyJointGroupPositions(joint_model_group, joint_group_positions);
 
             joint_group_positions =
-            {-0.889910,            // Joint 1
-             +0.767889,            // Joint 2
-             -1.617326,            // Joint 3
-             -1.101850,           // Joint 4
-             +0.202594,           // Joint 5
-             +1.689239,            // Joint 6
-             -1.424859             // Joint 7
+            {-0.913144,            // Joint 1
+             +0.756255,            // Joint 2
+             -1.601157,            // Joint 3
+             -1.098657,           // Joint 4
+             +0.218129,           // Joint 5
+             +1.704417,            // Joint 6
+             -1.399994             // Joint 7
             };
-
+ 
     moveFunction(joint_group_positions, joint_model_group, move_group, visual_tools, speed, text_pose);
 
     return true;
@@ -1095,6 +1095,11 @@ void closeGripper(actionlib::SimpleActionClient<franka_gripper::GraspAction> *ac
 
 }
 
+void homeGripper(actionlib::SimpleActionClient<franka_gripper::HomingAction> *ach, franka_gripper::HomingGoal goal){
+   ach->sendGoal(goal);
+   sleep(5);
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void ShowToCamera(const robot_state::JointModelGroup* joint_model_group,
@@ -1116,7 +1121,8 @@ void ShowToCamera(const robot_state::JointModelGroup* joint_model_group,
             };
 
     moveFunction(joint_group_positions, joint_model_group, move_group, visual_tools, speed, text_pose);
-                     }
+    sleep(1);
+ }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1253,25 +1259,27 @@ int main(int argc, char** argv)
     ROS_INFO_NAMED("tutorial", "End effector link: %s", move_group.getEndEffectorLink().c_str());
     visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to start the demo");
 
-    double speed = 0.14;
+    double speed = 0.4;
     moveit::core::RobotStatePtr current_state;
 
     actionlib::SimpleActionClient<franka_gripper::GraspAction> acg("franka_gripper/grasp", true);
     actionlib::SimpleActionClient<franka_gripper::StopAction> acs("franka_gripper/stop", true);
     actionlib::SimpleActionClient<franka_gripper::MoveAction> acm("franka_gripper/move", true);
+    actionlib::SimpleActionClient<franka_gripper::HomingAction> ach("franka_gripper/homing", true);
 
     ROS_INFO("Waiting for action server to start.");
     //wait for the action server to start
     acg.waitForServer(); //will wait for infinite time
     acs.waitForServer();
     acm.waitForServer();
+    ach.waitForServer();
     ROS_INFO("Action server started, sending goal.");
     franka_gripper::GraspGoal goalG;
     franka_gripper::StopGoal goalS;
     franka_gripper::MoveGoal goalM;
+    franka_gripper::HomingGoal goalH;
 
-
-    openGripper(&acs, &acm, goalS, goalM);
+    // openGripper(&acs, &acm, goalS, goalM);
 
     // DAS HIER IST LEBENSNOTWENDIG - ENDE
     // Ab hier werden die einzelnen Funktionen aufgerufen
@@ -1345,12 +1353,17 @@ int main(int argc, char** argv)
                 sleep(2);
                 continue;
             }
+        } else if (movement.compare("XX") == 0){
+            continue;
         }
         
         myReadFile.clear();
         myReadFile.seekg(0, std::ios::beg);
         myReadFile << "XX";
         myReadFile.close();
+       
+                
+
 
         // remove file --> recreated by OPC-UA client when input needed
         // ERST UNKOMMENTIEREN, WENN WIRKLICH ALLES CHILLIG (WEG-)LÄUFT *HAHA*
@@ -1360,14 +1373,17 @@ int main(int argc, char** argv)
 
         // move robot accordingly
         if(movement.compare("PO") == 0){
+            homeGripper(&ach, goalH);
             getBlockFromPrinterToOutput(joint_model_group, &move_group, visual_tools, speed, text_pose,
                                         current_state, &acg, &acs, &acm, goalG, goalS, goalM);
         }
         else if(movement.compare("PS") == 0){
+            homeGripper(&ach, goalH);
             getBlockFromPrinterToStorage(joint_model_group, &move_group, visual_tools, speed, text_pose, place,
                                          current_state, &acg, &acs, &acm, goalG, goalS, goalM);
         }
         else if(movement.compare("SO") == 0){
+            homeGripper(&ach, goalH);
             getBlockFromStorageToOutput(joint_model_group, &move_group, visual_tools, speed, text_pose, place,
                                         current_state, &acg, &acs, &acm, goalG, goalS, goalM);
         }
@@ -1380,4 +1396,3 @@ int main(int argc, char** argv)
     ros::shutdown();
     return 0;
 }
-
