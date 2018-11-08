@@ -6,7 +6,7 @@
 //                                              /____/
 //   Salzburg Research ForschungsgesmbH
 //
-//   Armin Niedermueller, Dominik Hofer, Michaela Mühlberger
+//  Dominik Hofer, Michaela Mühlberger, Armin Niedermueller
 
 //  DTZ ROS Robot Demonstrator
 //  The purpose of this program is to control the panda robot via ros
