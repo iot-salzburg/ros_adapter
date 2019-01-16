@@ -27,6 +27,8 @@
 
 #include <ros/ros.h>
 #include <ros/console.h>
+
+#include "std_msgs/String.h"
 #include <actionlib/client/simple_action_client.h>
 #include <actionlib/client/terminal_state.h>
 
@@ -47,6 +49,7 @@
 std::string global_moving{"false"};
 std::string global_order_movement{"XX"};
 std::string global_response{"none"};
+std_msgs::String global_ros_response;
 int global_order_pos{0};
 int global_temperature;
 
@@ -1194,8 +1197,8 @@ int main(int argc, char** argv)
     // ROS INIT
     ros::init(argc, argv, "Stretching");
     ros::NodeHandle node_handle;
-    ros::Subscriber sub = n.subscribe("ros_opcua_order", 1000, chatterCallback);
-    ros::Publisher pub = n.advertise<std_msgs::String>("ros_opcua_response", 1000);
+    ros::Subscriber sub = node_handle.subscribe("ros_opcua_order", 1000, chatterCallback);
+    ros::Publisher pub = node_handle.advertise<std_msgs::String>("ros_opcua_response", 1000);
 
     ros::AsyncSpinner spinner(1);
     spinner.start();
@@ -1254,9 +1257,9 @@ int main(int argc, char** argv)
 
 
             ////////////////// RECEIVING ORDERS //////////////////
-            if (global_order_movement.compare("PS") == 0 || global_order_movementcompare("SO") == 0) {
-                place = std::stoi(tmpString.substr(3, 1));
-                std::cout << "Place: " << global_order_pos < std::endl;
+            if (global_order_movement.compare("PS") == 0 || global_order_movement.compare("SO") == 0) {
+
+                std::cout << "Place: " << global_order_pos << std::endl;
 
                 // check if place is supported (must be between 1 and 9)
                 if (global_order_pos < 1 || global_order_pos > 9) {
@@ -1271,22 +1274,24 @@ int main(int argc, char** argv)
 
 
             ////////////////// MOVEMENT OF ROBOT //////////////////
-            if (movement.compare("PO") == 0) {
+            if (global_order_movement.compare("PO") == 0) {
                 homeGripper(&ach, goalH);
                 getBlockFromPrinterToOutput(joint_model_group, &move_group, visual_tools, speed, text_pose,
                                             current_state, &acg, &acs, &acm, goalG, goalS, goalM);
-            } else if (movement.compare("PS") == 0) {
+            } else if (global_order_movement.compare("PS") == 0) {
                 homeGripper(&ach, goalH);
-                getBlockFromPrinterToStorage(joint_model_group, &move_group, visual_tools, speed, text_pose, place,
+                getBlockFromPrinterToStorage(joint_model_group, &move_group, visual_tools, speed, text_pose, global_order_pos,
                                              current_state, &acg, &acs, &acm, goalG, goalS, goalM);
-            } else if (movement.compare("SO") == 0) {
+            } else if (global_order_movement.compare("SO") == 0) {
                 homeGripper(&ach, goalH);
-                getBlockFromStorageToOutput(joint_model_group, &move_group, visual_tools, speed, text_pose, place,
+                getBlockFromStorageToOutput(joint_model_group, &move_group, visual_tools, speed, text_pose, global_order_pos,
                                             current_state, &acg, &acs, &acm, goalG, goalS, goalM);
             }
 
+            // Save string inside ROS MSG STRING object in order to transport over topics
+            global_ros_response.data = global_response;
 
-            pub.publish(global_response);
+            pub.publish(global_ros_response);
             sleep(2);
 
         }
