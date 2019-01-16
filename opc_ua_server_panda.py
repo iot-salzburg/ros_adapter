@@ -62,31 +62,18 @@ global_robot_moving = "None"
 global_robot_order = "XX,0"
 
 
-def protocom():
+def callback_ros_sub(data):
     global global_robot_state
     global global_robot_moving
 
-    # Protobuf Init
-    global_robot_message = RobotMessage()
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.bind(("127.0.0.1", 5555))
+    rospy.loginfo(rospy.get_caller_id() + "robot state received via ros topic: %s", data.data)
+    
+    global_robot_state = data.data
 
-    while True:
-        logger.debug("protobuf - waiting to receive")
-
-        # receive protobuf message
-        data, addr = sock.recvfrom(1024)
-
-        logger.debug("data: " + str(data))
-
-        global_robot_message.ParseFromString(data)
-
-        # split the info into global vars
-        global_robot_state = global_robot_message.state
-        global_robot_moving = global_robot_message.moving
-        logger.debug(
-            "protobuf - received: " + str(global_robot_message.state) + " and " + str(global_robot_message.moving))
-
+    if global_robot_state is not "Moving":
+        global_robot_moving = True
+    else: 
+        global_robot_moving = False
 
 
 @uamethod
@@ -117,9 +104,10 @@ if __name__ == "__main__":
     p = None
 
     #### ROS NODE SETUP #####
-    panda_publisher = rospy.Publisher('ros_opcua_order', String, queue_size=0)   # no queue for received messages
+    panda_publisher = rospy.Publisher("ros_opcua_order", String, queue_size=0)   # no queue for received messages
+    panda_subscriber = rospy.Subscriber("ros_opcua_response", String, callback_ros_sub)
     rospy.init_node('ros_opcua_bridge', anonymous=True)
-    rate = rosp.Rate(3) # operate while loop with 3Hz
+    rate = rospy.Rate(3) # operate while loop with 3Hz
 
     ## OPC-UA SERVER SETUP ##
     server = Server()
@@ -176,7 +164,7 @@ if __name__ == "__main__":
             elif global_robot_moving == "false":
                 robot_moving.set_value(False)
 
-            if global_robot_order.split(',)')[0] is not "XX":
+            if global_robot_order.split(',')[0] is not "XX":
                 rospy.loginfo("main: robot order changed - sending " + global_robot_order + " as string via ros")
                 logger.debug("main: robot order changed - sending " + global_robot_order + " as string via ros")
                 panda_publisher.publish(global_robot_order)
