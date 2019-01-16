@@ -44,7 +44,6 @@
 #include "dtz_robot_message.pb.cc"
 
 
-std::string global_state{"none"};
 std::string global_moving{"false"};
 std::string global_order_movement{"XX"};
 std::string global_response{"none"};
@@ -52,67 +51,6 @@ int global_order_pos{0};
 int global_temperature;
 
 namespace rvt = rviz_visual_tools;
-
-
-////////////////////////////////////////////// PROTOBUF METHODS ////////////////////////////////////////////////////////
-
-void protocom(){
-
-    //// P R O T O B U F - I N I T  ////
-    struct sockaddr_in addr;
-
-    addr.sin_family = AF_INET;
-    inet_aton("127.0.0.1", &addr.sin_addr);
-    addr.sin_port = htons(5555);
-
-    GOOGLE_PROTOBUF_VERIFY_VERSION;
-    protopanda::RobotMessage robot_message;
-    std::string buf;
-    int sock = socket(PF_INET, SOCK_DGRAM, 0  );
-
-    // Set instance members
-    robot_message.set_id(1);
-    robot_message.set_state(global_state.c_str());
-    robot_message.set_moving(global_moving.c_str());
-    //robot_message.set_temperature(global_temperature);    // Int32
-    //robot_message.set_opt1("none");                      // String
-    //robot_message.set_opt2("none");                      // String
-
-    // send via protobuf
-
-    robot_message.SerializeToString(&buf);
-    sendto(sock, buf.data(), strlen(buf.c_str()), 0, (struct sockaddr *)&addr, sizeof(addr));
-
-    int id_counter{0};
-    std::string old_state{"none"};
-
-
-    while(true){
-
-        if (old_state != global_state){
-
-            // Print out Info 
-            std::cout << "global_state: " << global_state << std::boolalpha << ". global_moving: " << global_moving << std::endl;
-
-            // Set instance members
-            robot_message.set_id(1);                   // Int32
-            robot_message.set_state(global_state.c_str());              // String
-            robot_message.set_moving(global_moving.c_str());
-
-            // send via protobuf
-            robot_message.SerializeToString(&buf);
-            sendto(sock, buf.data(), strlen(buf.c_str()), 0, (struct sockaddr *)&addr, sizeof(addr));
-
-            old_state = global_state;
-
-            id_counter++;
-        }
-
-    }
-
-}
-
-
 
 
 ////////////////////////////////////////////////  ROBOT ROS METHODS  ///////////////////////////////////////////////////
@@ -1307,12 +1245,6 @@ int main(int argc, char** argv)
     // openGripper(&acs, &acm, goalS, goalM);
 
 
-    // Protobuf INIT
-    // Start protobuf communication thread
-    std::thread protocom_thread (protocom);
-
-    // Print out state info
-    std::cout << "global_state: " << global_state << std::boolalpha << ". global_moving: " << global_moving << std::endl;
 
 
     ///////////////// MAIN LOOP //////////////////
