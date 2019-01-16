@@ -12,8 +12,8 @@
 # The purpose of this OPCUA server is to provide methods to control the panda robot and read its state, also it is a
 # bridge between ROS and OPCUA.
 
-from dtz_robot_message_pb2 import RobotMessage
 from opcua import ua, uamethod, Server
+import rospy
 from std_msgs.msg import String
 import subprocess
 import threading
@@ -22,7 +22,7 @@ import logging
 import socket
 import time
 import sys
-import rospy
+
 
 
 
@@ -40,7 +40,7 @@ formatter = logging.Formatter('%(asctime)s - %(name)s [%(filename)s:%(lineno)d] 
 # add formatter to ch
 ch.setFormatter(formatter)
 
-fh = logging.FileHandler('/var/log/opc_ua_server_panda.log')
+fh = logging.FileHandler('/var/log/opc_ua/_server_panda.log')
 fh.setLevel(logging.DEBUG)
 fh.setFormatter(formatter)
 
@@ -142,16 +142,11 @@ if __name__ == "__main__":
 
     logger.debug("OPC-UA - Panda - Server started at {}".format(url))
 
-    # Start protobuf communication
-    protocom_thread = threading.Thread(name='protobuf_com_thread', target=protocom, args=())
-    protocom_thread.daemon = True
-    protocom_thread.start()
-
     try:
         # Assign random values to the parameters
         logger.debug("going into loop")
 
-        while not rospy.ist_shutdown():
+        while not rospy.is_shutdown():
             TIME = datetime.datetime.now()  # current time
 
             # set the random values inside the node
