@@ -59,7 +59,7 @@ sys.path.insert(0, "..")
 
 global_robot_state = None
 global_robot_moving = "None"
-global_robot_order = "XX,0"
+global_robot_order = "XX 0"
 
 
 def callback_ros_sub(data):
@@ -159,10 +159,12 @@ if __name__ == "__main__":
             elif global_robot_moving == "false":
                 robot_moving.set_value(False)
 
-            if global_robot_order.split(',')[0] is not "XX":
-                rospy.loginfo("main: robot order changed - sending " + global_robot_order + " as string via ros")
-                logger.debug("main: robot order changed - sending " + global_robot_order + " as string via ros")
+            if global_robot_order.split(' ')[0] != 'XX':
+                
+                rospy.loginfo("main: robot order changed - sending " + global_robot_order + " via ros")
+                logger.debug("main: robot order changed - sending " + global_robot_order + " via ros")
                 panda_publisher.publish(global_robot_order)
+                global_robot_order = "XX 0" # set to XX 0 again, otherwise the robot would run again and again
 
             rate.sleep()
 
