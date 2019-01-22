@@ -2,9 +2,8 @@ cmake_minimum_required(VERSION 2.8.3)
 project(niks_experiments)
 
 add_compile_options(-std=c++11)
-
+find_package(catkin REQUIRED COMPONENTS message_generation rospy)
 find_package(Eigen3 REQUIRED)
-
 find_package(Protobuf REQUIRED)
 
 # Eigen 3.2 (Wily) only provides EIGEN3_INCLUDE_DIR, not EIGEN3_INCLUDE_DIRS
@@ -26,9 +25,14 @@ find_package(catkin REQUIRED COMPONENTS
         control_msgs
         franka_gripper
         control_msgs
+        rosgraph_msgs
+        rospy
 )
 
+
+
 find_package(Boost REQUIRED system filesystem date_time thread)
+
 
 set(THIS_PACKAGE_INCLUDE_DIRS
   doc/interactivity/include
@@ -53,6 +57,7 @@ target_link_libraries(pick_and_place ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_executable(Kick_Off_Event_Move_It src/Kick_Off_Event_Move_It.cpp)
 target_link_libraries(Kick_Off_Event_Move_It ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
+
 install(DIRECTORY launch DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
   PATTERN "setup_assistant.launch" EXCLUDE)
 install(DIRECTORY config DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
@@ -62,11 +67,16 @@ install(DIRECTORY franka_ros/include/franka_gripper/franka_gripper.h
   	FILES_MATCHING PATTERN "*.h"
   	PATTERN ".svn" EXCLUDE)
 
+
+install(PROGRAMS scripts/opc_ua_ros_server.py DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+
 install(TARGETS Z_FirstTry DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 install(TARGETS Stretching DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 install(TARGETS Stretching_ohne_Rviz DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 install(TARGETS pick_and_place DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 install(TARGETS Kick_Off_Event_Move_It DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
 
 ###########
 ## Build ##
