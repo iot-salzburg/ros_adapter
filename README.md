@@ -25,5 +25,13 @@ rosrun niks_experiments opc_ua_ros_server.py
 Im Rviz Fenster -> obere Leiste "Panel" -> Add New Panel -> RvizVisualToolsgui (OK Drücken, nicht doppelklick)
 Dann unten auf "Continue"
 
+## Nach Aufsetzen eines neuen Systems:
+
+#### ROS Aufsetzen
+#### Catkin Workspace erstellen
+#### Im Workspacefolder src dieses git hier pullen
+#### "catkin build" ausführen
 
 
+## Bei Änderungen an Stretching.cpp 
+#### im workspace folder oder package folder "catkin build" ausführen
