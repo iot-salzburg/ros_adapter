@@ -14,8 +14,8 @@ endif()
 include_directories(${PROTOBUF_INCLUDE_DIR})
 
 find_package(catkin REQUIRED COMPONENTS
-	roscpp
-	std_msgs
+        roscpp
+        std_msgs
         moveit_core
         moveit_visual_tools
         moveit_ros_planning
@@ -63,9 +63,9 @@ install(DIRECTORY launch DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 install(DIRECTORY config DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
 install(DIRECTORY franka_ros/include/franka_gripper/franka_gripper.h
-	DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-  	FILES_MATCHING PATTERN "*.h"
-  	PATTERN ".svn" EXCLUDE)
+        DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+        FILES_MATCHING PATTERN "*.h"
+        PATTERN ".svn" EXCLUDE)
 
 
 install(PROGRAMS scripts/opc_ua_ros_server.py DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
