@@ -1101,8 +1101,6 @@ bool getBlockFromPrinterToOutput(const robot_state::JointModelGroup* joint_model
                                  actionlib::SimpleActionClient<franka_gripper::MoveAction> *acm, franka_gripper::GraspGoal goalG,
                                  franka_gripper::StopGoal goalS, franka_gripper::MoveGoal goalM){
 
-    // publish state
-    global_response = "Moving";
 
     moveToPrinter(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
     closeGripper(acg, goalG);
@@ -1117,10 +1115,6 @@ bool getBlockFromPrinterToOutput(const robot_state::JointModelGroup* joint_model
     moveFromOutput(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
     moveToInitialPosition(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
 
-
-    // publish state
-    global_response = "Stopped";
-
     return true;
 }
 
@@ -1131,9 +1125,6 @@ bool getBlockFromPrinterToStorage(const robot_state::JointModelGroup* joint_mode
                                   actionlib::SimpleActionClient<franka_gripper::GraspAction> *acg, actionlib::SimpleActionClient<franka_gripper::StopAction> *acs,
                                   actionlib::SimpleActionClient<franka_gripper::MoveAction> *acm, franka_gripper::GraspGoal goalG,
                                   franka_gripper::StopGoal goalS, franka_gripper::MoveGoal goalM){
-
-    // publish state
-    global_response = "Moving";
 
     moveToPrinter(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
     closeGripper(acg, goalG);
@@ -1150,9 +1141,6 @@ bool getBlockFromPrinterToStorage(const robot_state::JointModelGroup* joint_mode
     moveFromStorage(joint_model_group, move_group, visual_tools, speed, text_pose, place, current_state);
 
     moveToInitialPosition(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
-
-    // publish state
-    global_response = "Stopped";
 
     return true;
 }
@@ -1166,9 +1154,6 @@ bool getBlockFromStorageToOutput(const robot_state::JointModelGroup* joint_model
                                  actionlib::SimpleActionClient<franka_gripper::MoveAction> *acm, franka_gripper::GraspGoal goalG,
                                  franka_gripper::StopGoal goalS, franka_gripper::MoveGoal goalM){
 
-    // publish state
-    global_response = "Moving";
-
     moveToStorage(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
     findRightSpot(joint_model_group, move_group, visual_tools, speed, text_pose, place, current_state);
     closeGripper(acg, goalG);
@@ -1183,9 +1168,6 @@ bool getBlockFromStorageToOutput(const robot_state::JointModelGroup* joint_model
 
     moveFromOutput(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
     moveToInitialPosition(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
-
-    // publish state
-    global_response = "Stopped";
 
     return true;
 }
@@ -1263,7 +1245,7 @@ int main(int argc, char** argv)
 
                 // check if place is supported (must be between 1 and 9)
                 if (global_order_pos < 1 || global_order_pos > 9) {
-                    std::cout << "Place not supported!" << std::endl;
+                    // std::cout << "Place not supported!" << std::endl;
                     global_order_movement = "XX";
                     global_order_pos = 0;
                     continue;
@@ -1271,6 +1253,13 @@ int main(int argc, char** argv)
             } else if (global_order_movement.compare("XX") == 0) {
                 continue;
             }
+
+            // publish state
+            global_response = "Moving";
+            // This is the Response from the robot if it is moving or not, necessary for the opcua master to wait until "stopped"
+            // so that it could run the conveyor belt
+            global_ros_response.data = global_response;
+            pub.publish(global_ros_response);
 
 
             ////////////////// MOVEMENT OF ROBOT //////////////////
@@ -1288,10 +1277,19 @@ int main(int argc, char** argv)
                                             current_state, &acg, &acs, &acm, goalG, goalS, goalM);
             }
 
-            // Save string inside ROS MSG STRING object in order to transport over topics
+            // publish state
+            global_response = "Stopped";
+            // This is the Response from the robot if it is moving or not, necessary for the opcua master to wait until "stopped"
+            // so that it could run the conveyor belt
             global_ros_response.data = global_response;
-
             pub.publish(global_ros_response);
+
+
+            // Reset Position, otherwise robot would move in an endless loop
+            global_order_pos = 0;
+
+
+
             sleep(2);
 
         }
