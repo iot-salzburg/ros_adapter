@@ -13,12 +13,16 @@ roslaunch panda_moveit_config moveit_rviz.launch
 
 #### Terminal 4 - Ansteuerung Roboter:
 source ~/libfranka/ws_moveit/devel/setup.bash
+
 cd ~/libfranka/ws_moveit/
+
 rosrun niks_experiments Stretching
 
 #### Terminal 5 - OPC UA Server & ROS Bridge:
 source ~/libfranka/ws_moveit/devel/setup.bash
+
 cd ~/libfranka/ws_moveit/
+
 rosrun niks_experiments opc_ua_ros_server.py
 
 #### RVIZ Fenster:
