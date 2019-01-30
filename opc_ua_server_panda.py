@@ -67,12 +67,12 @@ def callback_ros_sub(data):
     global global_robot_moving
 
     rospy.loginfo(rospy.get_caller_id() + "robot state received via ros topic: %s", data.data)
-    
+
     global_robot_state = data.data
 
-    if global_robot_state is not "Moving":
+    if global_robot_state == "Moving":
         global_robot_moving = True
-    else: 
+    else:
         global_robot_moving = False
 
 
@@ -150,17 +150,15 @@ if __name__ == "__main__":
             TIME = datetime.datetime.now()  # current time
 
             # set the random values inside the node
-            logger.debug("set robot state to %s", global_robot_state)
+            # logger.debug("set robot state to %s", global_robot_state)
             robot_state.set_value(global_robot_state)
 
-            logger.debug("set robot moving value to %s", global_robot_moving)
-            if global_robot_moving == "true":
-                robot_moving.set_value(True)
-            elif global_robot_moving == "false":
-                robot_moving.set_value(False)
+            # logger.debug("set robot moving value to %s", global_robot_moving)
+            robot_moving.set_value(global_robot_moving)
+
 
             if global_robot_order.split(' ')[0] != 'XX':
-                
+
                 rospy.loginfo("main: robot order changed - sending " + global_robot_order + " via ros")
                 logger.debug("main: robot order changed - sending " + global_robot_order + " via ros")
                 panda_publisher.publish(global_robot_order)
@@ -169,7 +167,9 @@ if __name__ == "__main__":
             rate.sleep()
 
 
-            logger.debug("gloval_robot_moving is: %s", global_robot_moving)
+            logger.debug("Robot State: %s", global_robot_state)
+            logger.debug("Robot is Moving: %s", global_robot_moving)
+
             # logger.debug("Robot-State: [" + str(global_robot_message.id) + "] : " + str(robot_state.get_value()) + ". Server-Time: " + str(server_time.get_value()))
             server_time.set_value(TIME)
             # var.set_value(var2)
