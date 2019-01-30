@@ -1,8 +1,16 @@
-// Es handelt sich hierbei um ein Beispielprogramm. Dieses ist in keiner Art und Weise auch nur ansatzweise optimiert.
-// Es sollten hier Funktionen inkludiert werden, die den Workflow erleichtern und somit dem Code an Komplexität nehmen
+//      _____         __        __                               ____                                        __
+//     / ___/ ____ _ / /____   / /_   __  __ _____ ____ _       / __ \ ___   _____ ___   ____ _ _____ _____ / /_
+//     \__ \ / __ `// //_  /  / __ \ / / / // ___// __ `/      / /_/ // _ \ / ___// _ \ / __ `// ___// ___// __ \
+//    ___/ // /_/ // /  / /_ / /_/ // /_/ // /   / /_/ /      / _, _//  __/(__  )/  __// /_/ // /   / /__ / / / /
+//   /____/ \__,_//_/  /___//_.___/ \__,_//_/    \__, /      /_/ |_| \___//____/ \___/ \__,_//_/    \___//_/ /_/
+//                                              /____/
+//   Salzburg Research ForschungsgesmbH
+//
+//  Dominik Hofer, Michaela Mühlberger, Armin Niedermueller
 
-//ROS: Mühlberger & Hofer
-//OPC-UA: Niedermüller
+//  DTZ ROS Robot Demonstrator
+//  The purpose of this program is to control the panda robot via ros
+//  It gets its TODOs via a rostopic from the opcua panda server
 
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
@@ -19,6 +27,8 @@
 
 #include <ros/ros.h>
 #include <ros/console.h>
+
+#include "std_msgs/String.h"
 #include <actionlib/client/simple_action_client.h>
 #include <actionlib/client/terminal_state.h>
 
@@ -36,73 +46,31 @@
 #include "dtz_robot_message.pb.cc"
 
 
-std::string global_state{"none"};
 std::string global_moving{"false"};
+std::string global_order_movement{"XX"};
+std::string global_response{"none"};
+std_msgs::String global_ros_response;
+int global_order_pos{0};
 int global_temperature;
-
 
 namespace rvt = rviz_visual_tools;
 
 
-////////////////////////////////////////////// M E T H O D S ///////////////////////////////////////////////////////////
+////////////////////////////////////////////////  ROBOT ROS METHODS  ///////////////////////////////////////////////////
 
-void protocom(){
+void chatterCallback(const std_msgs::String::ConstPtr& msg){
+    ROS_INFO("I heard: [%s]", msg->data.c_str());
 
-    //// P R O T O B U F - I N I T  ////
-    struct sockaddr_in addr;
+    // create and initialize a stringstream object with our string
+    std::stringstream ss{msg->data.c_str()};
 
-    addr.sin_family = AF_INET;
-    inet_aton("127.0.0.1", &addr.sin_addr);
-    addr.sin_port = htons(5555);
-
-    GOOGLE_PROTOBUF_VERIFY_VERSION;
-    protopanda::RobotMessage robot_message;
-    std::string buf;
-    int sock = socket(PF_INET, SOCK_DGRAM, 0  );
-
-    // Set instance members
-    robot_message.set_id(1);
-    robot_message.set_state(global_state.c_str());
-    robot_message.set_moving(global_moving.c_str());
-    //robot_message.set_temperature(global_temperature);    // Int32
-    //robot_message.set_opt1("none");                      // String
-    //robot_message.set_opt2("none");                      // String
-
-    // send via protobuf
-
-    robot_message.SerializeToString(&buf);
-    sendto(sock, buf.data(), strlen(buf.c_str()), 0, (struct sockaddr *)&addr, sizeof(addr));
-
-    int id_counter{0};
-    std::string old_state{"none"};
+    // split the string into to arguments
+    ss >> global_order_movement;    // PO
+    ss >> global_order_pos;         // 3
 
 
-    while(true){
-
-        if (old_state != global_state){
-
-            // Print out Info 
-            std::cout << "global_state: " << global_state << std::boolalpha << ". global_moving: " << global_moving << std::endl;
-
-            // Set instance members
-            robot_message.set_id(1);                   // Int32
-            robot_message.set_state(global_state.c_str());              // String
-            robot_message.set_moving(global_moving.c_str());
-
-            // send via protobuf
-            robot_message.SerializeToString(&buf);
-            sendto(sock, buf.data(), strlen(buf.c_str()), 0, (struct sockaddr *)&addr, sizeof(addr));
-
-            old_state = global_state;
-
-            id_counter++;
-        }
-
-    }
-    
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void moveFunction(std::vector<double> joint_group_positions, const robot_state::JointModelGroup* joint_model_group,
                   moveit::planning_interface::MoveGroupInterface* move_group, moveit_visual_tools::MoveItVisualTools visual_tools, float speed, Eigen::Affine3d text_pose){
@@ -237,7 +205,7 @@ bool moveFromPrinter(const robot_state::JointModelGroup* joint_model_group,
 bool moveToOutput(const robot_state::JointModelGroup* joint_model_group,
                   moveit::planning_interface::MoveGroupInterface* move_group, moveit_visual_tools::MoveItVisualTools visual_tools, float speed,   Eigen::Affine3d text_pose, moveit::core::RobotStatePtr current_state){
     // Erste Position
-        std::vector<double> joint_group_positions;
+    std::vector<double> joint_group_positions;
     current_state = move_group->getCurrentState();
     current_state->copyJointGroupPositions(joint_model_group, joint_group_positions);
 
@@ -363,7 +331,7 @@ bool findPlaceOne(const robot_state::JointModelGroup* joint_model_group,
     current_state = move_group->getCurrentState();
     current_state->copyJointGroupPositions(joint_model_group, joint_group_positions);
 
-            joint_group_positions =
+    joint_group_positions =
             {-0.913144,            // Joint 1
              +0.756255,            // Joint 2
              -1.601157,            // Joint 3
@@ -372,7 +340,7 @@ bool findPlaceOne(const robot_state::JointModelGroup* joint_model_group,
              +1.704417,            // Joint 6
              -1.399994             // Joint 7
             };
- 
+
     moveFunction(joint_group_positions, joint_model_group, move_group, visual_tools, speed, text_pose);
 
     return true;
@@ -1071,7 +1039,7 @@ bool moveFromStorage(const robot_state::JointModelGroup* joint_model_group,
     moveFunction(joint_group_positions, joint_model_group, move_group, visual_tools, speed, text_pose);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
+
 
     return true;
 }
@@ -1096,14 +1064,14 @@ void closeGripper(actionlib::SimpleActionClient<franka_gripper::GraspAction> *ac
 }
 
 void homeGripper(actionlib::SimpleActionClient<franka_gripper::HomingAction> *ach, franka_gripper::HomingGoal goal){
-   ach->sendGoal(goal);
-   sleep(5);
+    ach->sendGoal(goal);
+    sleep(5);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void ShowToCamera(const robot_state::JointModelGroup* joint_model_group,
-                     moveit::planning_interface::MoveGroupInterface* move_group, moveit_visual_tools::MoveItVisualTools visual_tools, float speed,   Eigen::Affine3d text_pose, moveit::core::RobotStatePtr current_state){
+                  moveit::planning_interface::MoveGroupInterface* move_group, moveit_visual_tools::MoveItVisualTools visual_tools, float speed,   Eigen::Affine3d text_pose, moveit::core::RobotStatePtr current_state){
     // show object to camera
     std::vector<double> joint_group_positions;
 
@@ -1122,7 +1090,7 @@ void ShowToCamera(const robot_state::JointModelGroup* joint_model_group,
 
     moveFunction(joint_group_positions, joint_model_group, move_group, visual_tools, speed, text_pose);
     sleep(1);
- }
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1133,9 +1101,6 @@ bool getBlockFromPrinterToOutput(const robot_state::JointModelGroup* joint_model
                                  actionlib::SimpleActionClient<franka_gripper::MoveAction> *acm, franka_gripper::GraspGoal goalG,
                                  franka_gripper::StopGoal goalS, franka_gripper::MoveGoal goalM){
 
-    // set states for protobuf
-    global_moving = "true";
-    global_state = "moving";
 
     moveToPrinter(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
     closeGripper(acg, goalG);
@@ -1150,11 +1115,6 @@ bool getBlockFromPrinterToOutput(const robot_state::JointModelGroup* joint_model
     moveFromOutput(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
     moveToInitialPosition(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
 
-
-    // set states for protobuf
-    global_moving = "false";
-    global_state = "stopped";
-
     return true;
 }
 
@@ -1165,10 +1125,6 @@ bool getBlockFromPrinterToStorage(const robot_state::JointModelGroup* joint_mode
                                   actionlib::SimpleActionClient<franka_gripper::GraspAction> *acg, actionlib::SimpleActionClient<franka_gripper::StopAction> *acs,
                                   actionlib::SimpleActionClient<franka_gripper::MoveAction> *acm, franka_gripper::GraspGoal goalG,
                                   franka_gripper::StopGoal goalS, franka_gripper::MoveGoal goalM){
-
-    // set states for protobuf
-    global_moving = "true";
-    global_state = "moving";
 
     moveToPrinter(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
     closeGripper(acg, goalG);
@@ -1185,10 +1141,6 @@ bool getBlockFromPrinterToStorage(const robot_state::JointModelGroup* joint_mode
     moveFromStorage(joint_model_group, move_group, visual_tools, speed, text_pose, place, current_state);
 
     moveToInitialPosition(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
-
-    // set states for protobuf
-    global_moving = "false";
-    global_state = "stopped";
 
     return true;
 }
@@ -1202,10 +1154,6 @@ bool getBlockFromStorageToOutput(const robot_state::JointModelGroup* joint_model
                                  actionlib::SimpleActionClient<franka_gripper::MoveAction> *acm, franka_gripper::GraspGoal goalG,
                                  franka_gripper::StopGoal goalS, franka_gripper::MoveGoal goalM){
 
-    // set states for protobuf
-    global_moving = "true";
-    global_state = "moving";
-
     moveToStorage(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
     findRightSpot(joint_model_group, move_group, visual_tools, speed, text_pose, place, current_state);
     closeGripper(acg, goalG);
@@ -1221,23 +1169,23 @@ bool getBlockFromStorageToOutput(const robot_state::JointModelGroup* joint_model
     moveFromOutput(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
     moveToInitialPosition(joint_model_group, move_group, visual_tools, speed, text_pose, current_state);
 
-    // set states for protobuf
-    global_moving = "false";
-    global_state = "stopped";
-
     return true;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+//////////////////////////////////////////////  M A I N  ///////////////////////////////////////////////////////////////
 int main(int argc, char** argv)
 {
-    // DAS HIER IST LEBENSNOTWENDIG - ANFANG: #PfotenWeg, #WeheDir, #IToldYouSo
+    ////////////////// INIT //////////////////
+    // ROS INIT
     ros::init(argc, argv, "Stretching");
     ros::NodeHandle node_handle;
+    ros::Subscriber sub = node_handle.subscribe("ros_opcua_order", 1000, chatterCallback);
+    ros::Publisher pub = node_handle.advertise<std_msgs::String>("ros_opcua_response", 1000);
+
     ros::AsyncSpinner spinner(1);
     spinner.start();
 
+    // PANDA INIT
     static const std::string PLANNING_GROUP = "panda_arm";
 
     moveit::planning_interface::MoveGroupInterface move_group(PLANNING_GROUP);
@@ -1281,118 +1229,75 @@ int main(int argc, char** argv)
 
     // openGripper(&acs, &acm, goalS, goalM);
 
-    // DAS HIER IST LEBENSNOTWENDIG - ENDE
-    // Ab hier werden die einzelnen Funktionen aufgerufen
 
-    // / / / / OPC-UA handling / / / / //
 
-    // Start protobuf communication thread
-    std::thread protocom_thread (protocom);
 
-    // Print out state info
-    std::cout << "global_state: " << global_state << std::boolalpha << ". global_moving: " << global_moving << std::endl;
+    ///////////////// MAIN LOOP //////////////////
+    try{
 
-    std::string movement;
-    int place;
+        while(ros::ok()) {
 
-    while(true){
 
-        // check if data excange file exists
-        // file location: /home/libfranka/ws_moveit
+            ////////////////// RECEIVING ORDERS //////////////////
+            if (global_order_movement.compare("PS") == 0 || global_order_movement.compare("SO") == 0) {
 
-        std::ifstream ifile("./OPCExchangeData.txt");
+                std::cout << "Place: " << global_order_pos << std::endl;
 
-        while(!ifile){
-            visual_tools.prompt("Got into the 'File does not exist'-Loop");
-            sleep(2);
-            ifile.open("./OPCExchangeData.txt");
-        }
-
-        ifile.close();
-
-        std::fstream myReadFile("./OPCExchangeData.txt", std::ios::in | std::ios::out);      
-           
-        char output[4];
-        if(myReadFile.is_open()){
-            while(!myReadFile.eof()){
-                myReadFile >> output;
-                // std::cout<< "Output: " << output << std::endl;
-            }
-        }
-        
-        myReadFile >> output;
-        // std::cout<< "Output: " << output << std::endl;
-
-        // File-Struktur: csv (PS,1)
-        // PO: Printer to Output
-        // PS: Printer to Storage (Storage place needed [1-9])
-        // SO: Storage to Output (Storage place needed [1-9])
-
-        std::string tmpString;
-        tmpString.append(output); // needed for substring handling
-        // std::cout<<"Temporärer String: " << tmpString<<std::endl;
-
-        // first 2 characters for movement
-        movement = tmpString.substr(0,2);
-        // std::cout<<"Movement: " << movement<<std::endl;
-
-        // if needed, fourth character defines storage place
-        if(movement.compare("PS") == 0 || movement.compare("SO") == 0){
-            place = std::stoi(tmpString.substr(3,1));
-            std::cout << "Place: " << place<<std::endl;
-
-            // check if place is supported (must be between 1 and 9)
-            if(place < 1 || place > 9){
-                std::cout << "Place not supported!" << std::endl;
-                myReadFile.seekg(0, std::ios::beg);
-                myReadFile.clear();
-                myReadFile << "XX";
-                myReadFile.close();
-                // ERST UNKOMMENTIEREN, WENN WIRKLICH ALLES CHILLIG (WEG-)LÄUFT *HAHA*
-                //remove("./OPCExchangeData.txt");
-                sleep(2);
+                // check if place is supported (must be between 1 and 9)
+                if (global_order_pos < 1 || global_order_pos > 9) {
+                    // std::cout << "Place not supported!" << std::endl;
+                    global_order_movement = "XX";
+                    global_order_pos = 0;
+                    continue;
+                }
+            } else if (global_order_movement.compare("XX") == 0) {
                 continue;
             }
-        } else if (movement.compare("XX") == 0){
-            continue;
-        }
-        
-        myReadFile.clear();
-        myReadFile.seekg(0, std::ios::beg);
-        myReadFile << "XX";
-        myReadFile.close();
-       
-                
+
+            // publish state
+            global_response = "Moving";
+            // This is the Response from the robot if it is moving or not, necessary for the opcua master to wait until "stopped"
+            // so that it could run the conveyor belt
+            global_ros_response.data = global_response;
+            pub.publish(global_ros_response);
 
 
-        // remove file --> recreated by OPC-UA client when input needed
-        // ERST UNKOMMENTIEREN, WENN WIRKLICH ALLES CHILLIG (WEG-)LÄUFT *HAHA*
-        
-        //remove("./OPCExchangeData.txt");
+            ////////////////// MOVEMENT OF ROBOT //////////////////
+            if (global_order_movement.compare("PO") == 0) {
+                homeGripper(&ach, goalH);
+                getBlockFromPrinterToOutput(joint_model_group, &move_group, visual_tools, speed, text_pose,
+                                            current_state, &acg, &acs, &acm, goalG, goalS, goalM);
+            } else if (global_order_movement.compare("PS") == 0) {
+                homeGripper(&ach, goalH);
+                getBlockFromPrinterToStorage(joint_model_group, &move_group, visual_tools, speed, text_pose, global_order_pos,
+                                             current_state, &acg, &acs, &acm, goalG, goalS, goalM);
+            } else if (global_order_movement.compare("SO") == 0) {
+                homeGripper(&ach, goalH);
+                getBlockFromStorageToOutput(joint_model_group, &move_group, visual_tools, speed, text_pose, global_order_pos,
+                                            current_state, &acg, &acs, &acm, goalG, goalS, goalM);
+            }
+
+            // publish state
+            global_response = "Stopped";
+            // This is the Response from the robot if it is moving or not, necessary for the opcua master to wait until "stopped"
+            // so that it could run the conveyor belt
+            global_ros_response.data = global_response;
+            pub.publish(global_ros_response);
 
 
-        // move robot accordingly
-        if(movement.compare("PO") == 0){
-            homeGripper(&ach, goalH);
-            getBlockFromPrinterToOutput(joint_model_group, &move_group, visual_tools, speed, text_pose,
-                                        current_state, &acg, &acs, &acm, goalG, goalS, goalM);
+            // Reset Position, otherwise robot would move in an endless loop
+            global_order_pos = 0;
+
+
+
+            sleep(2);
+
         }
-        else if(movement.compare("PS") == 0){
-            homeGripper(&ach, goalH);
-            getBlockFromPrinterToStorage(joint_model_group, &move_group, visual_tools, speed, text_pose, place,
-                                         current_state, &acg, &acs, &acm, goalG, goalS, goalM);
-        }
-        else if(movement.compare("SO") == 0){
-            homeGripper(&ach, goalH);
-            getBlockFromStorageToOutput(joint_model_group, &move_group, visual_tools, speed, text_pose, place,
-                                        current_state, &acg, &acs, &acm, goalG, goalS, goalM);
-        }
+
+    } catch(const std::exception& e){
+        std::cout << "Catched Exception: " << e.what() << " - stopping program" << std::endl;
+        ros::shutdown();
+        return 0;
     }
 
-
-
-    // Auch wieder notwendig!!!
-
-    ros::shutdown();
-    return 0;
 }
