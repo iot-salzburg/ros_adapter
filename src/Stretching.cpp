@@ -42,9 +42,6 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
-#include "dtz_robot_message.pb.h"
-#include "dtz_robot_message.pb.cc"
-
 
 std::string global_moving{"false"};
 std::string global_order_movement{"XX"};
