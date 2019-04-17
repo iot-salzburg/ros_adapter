@@ -2,6 +2,10 @@
 
 ## Startanleitung für den PandaRoboter im Demonstrationsmodus:
 
+ausführen von demonstrator_start.sh
+
+Ansonsten Anleitung wie folgt bzw. Nachsehen im Confluence. 
+
 #### Terminal 1 - Franka Control:
 roslaunch franka_control franka_control.launch robot_ip:=192.168.13.1
 
