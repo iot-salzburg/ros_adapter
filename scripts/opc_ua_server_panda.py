@@ -58,7 +58,7 @@ logger.critical('critical message')
 sys.path.insert(0, "..")
 
 global_robot_state = None
-global_robot_moving = "None"
+global_robot_moving = False
 global_robot_order = "XX 0"
 
 
