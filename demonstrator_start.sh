@@ -3,22 +3,23 @@
 
 
 echo "Is the ROBOT unfolded??"
-sleep 2
+read -n 1 -s -r -p "Press any key to continue"
+echo 
 
 
-gnome-terminal -e "bash -c 'export LD_LIBRARY_PATH=/opt/ros/kinetic/lib/:/opt/ros/kinetic/lib/x86_64-linux-gnu/ && roslaunch franka_control franka_control.launch robot_ip:=192.168.13.1'"
+gnome-terminal -e "bash -c 'roslaunch franka_control franka_control.launch robot_ip:=192.168.13.1'"
 #sleep 5
 #gnome-terminal -e "roslaunch franka_gripper franka_gripper.launch robot_ip:=192.168.13.1"
 sleep 5
 
 rostopic pub -1 /franka_control/error_recovery/goal franka_control/ErrorRecoveryActionGoal "{}"
-gnome-terminal -e "bash -c 'export LD_LIBRARY_PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64:/usr/lib/jvm/java-8-openjdk-amd64/serve:/opt/ros/kinetic/lib/:/opt/ros/kinetic/lib/x86_64-linux-gnu/ && roslaunch panda_moveit_config panda_moveit.launch'"
+gnome-terminal -e "bash -c 'roslaunch panda_moveit_config panda_moveit.launch'"
 sleep 5
-gnome-terminal -e "bash -c 'export LD_LIBRARY_PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64:/usr/lib/jvm/java-8-openjdk-amd64/serve:/opt/ros/kinetic/lib/:/opt/ros/kinetic/lib/x86_64-linux-gnu/ && roslaunch panda_moveit_config moveit_rviz.launch'"
+gnome-terminal -e "bash -c 'roslaunch panda_moveit_config moveit_rviz.launch'"
 sleep 5
-gnome-terminal -e "bash -c 'export LD_LIBRARY_PATH=/opt/ros/kinetic/lib/:/opt/ros/kinetic/lib/x86_64-linux-gnu/ && cd ~/libfranka/ws_moveit/ && source devel/setup.bash && rosrun niks_experiments Stretching'"
+gnome-terminal -e "bash -c 'cd ~/libfranka/ws_moveit/ && source devel/setup.bash && rosrun niks_experiments Stretching'"
 sleep 5
-gnome-terminal -e "bash -c 'export LD_LIBRARY_PATH=/opt/ros/kinetic/lib/:/opt/ros/kinetic/lib/x86_64-linux-gnu/ && cd ~/libfranka/ws_moveit/ && source devel/setup.bash && rosrun niks_experiments opc_ua_ros_server.py'"
+gnome-terminal -e "bash -c 'cd ~/libfranka/ws_moveit/ && source devel/setup.bash && rosrun niks_experiments opc_ua_ros_server.py'"
 
 sleep 15
 echo "PRESS 'Continue'"
