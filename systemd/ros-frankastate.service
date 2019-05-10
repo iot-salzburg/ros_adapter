@@ -1,0 +1,11 @@
+[Unit]
+Description=Launcher for the ROS master, parameter server and rosout logging node
+After=network.target
+
+[Service]
+User=panda
+ExecStart=/home/panda/ros-frankastate.sh
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

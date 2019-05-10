@@ -1,0 +1,6 @@
+<launch>
+  <!-- Start up the throttle from the topic_tools
+       rosrun topic_tools throttle messages /franka_state_controller/franka_states 1.0 -->
+  <node pkg="topic_tools" type="throttle" name="throttle" args="messages /franka_state_controller/franka_states 1.0"/> 
+  <node pkg="state_export" type="ros_kafka_adapter.py" name="ros_kafka_adapter"/> 
+</launch>
