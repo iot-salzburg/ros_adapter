@@ -37,6 +37,8 @@ version **0.11.6**
     cd /home/panda/franka_apps_ws/src/state_export/scripts/
     ln -s /home/panda/dtz_panda/ros_kafka_adapter/src/ros_kafka_adapter.py ros_kafka_adapter.py
 
+    cd /home/panda/franka_apps_ws
+    . devel/setup.bash
     roslaunch franka_control franka_control.launch robot_ip:=192.168.13.1
     rostopic list
     ```
