@@ -126,7 +126,7 @@ def publishJointState(payload):
             pTime = datetime.utcnow().replace(tzinfo=pytz.UTC).isoformat()
     
         # Build and send the message for the force
-        print("panda.joint_states.gripper_pos: {}".format(actual_panda_gripper_states))
+        # print("panda.joint_states.gripper_pos: {}".format(actual_panda_gripper_states))
         pr_client.produce(quantity="panda.joint_states.gripper_pos", result=actual_panda_gripper_states, timestamp=pTime)
 
 def get_pTime_from_payload(payload):
