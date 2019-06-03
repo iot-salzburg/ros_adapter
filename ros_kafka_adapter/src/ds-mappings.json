@@ -1,0 +1,39 @@
+{
+  "Datastreams": {
+    "panda.franka_state.force_z": {
+      "Thing": "panda", 
+      "Sensor": "ros_franka_control", 
+      "name": "End Effector vertical Force"
+    }, 
+    "panda.franka_state.pos_x": {
+      "Thing": "panda", 
+      "Sensor": "ros_franka_control", 
+      "name": "End Effector x-Position"
+    }, 
+    "panda.franka_state.pos_y": {
+      "Thing": "panda", 
+      "Sensor": "ros_franka_control", 
+      "name": "End Effector y-Position"
+    }, 
+    "panda.franka_state.pos_z": {
+      "Thing": "panda", 
+      "Sensor": "ros_franka_control", 
+      "name": "End Effector z-Position"
+    }, 
+    "panda.joint_states.gripper_pos": {
+      "Thing": "panda", 
+      "Sensor": "ros_franka_control", 
+      "name": "Actual Gripper Position"
+    }
+  }, 
+  "Things": {
+    "panda": {
+      "name": "Panda"
+    }
+  }, 
+  "Sensors": {
+    "ros_franka_control": {
+      "name": "franka panda control"
+    }
+  }
+}

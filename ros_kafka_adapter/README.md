@@ -32,13 +32,13 @@ version **0.11.6**
 
 ## Requirements
 
-3.  Make sure the [Panta Rhei](https://github.com/iot-salzburg/panta_rhei) stack is running.
+1.  Make sure the [Panta Rhei](https://github.com/iot-salzburg/panta_rhei) stack is running.
     This ROS-Adaper requires Apache **Kafka**, as well as the **SensorThings** server GOST.
-4.  Make sure ROS runs and is accessable from the host machine:
+2.  Make sure ROS runs and is accessable from the host machine:
 
     ```bash
     cd /home/panda/franka_apps_ws/src/state_export/scripts/
-    ln /home/panda/dtz_panda/ros_kafka_adapter/src/ros_kafka_adapter.py ros_kafka_adapter.py
+    ln -s /home/panda/dtz_panda/ros_kafka_adapter/src/ros_kafka_adapter.py ros_kafka_adapter.py
 
     roslaunch franka_control franka_control.launch robot_ip:=192.168.13.1
     rostopic list
@@ -47,14 +47,15 @@ version **0.11.6**
     The command `rostopic list` should return multiple topics including `/franka_state_controller/franka_states` and `/joint_states`.
 
 
-5.  Clone the Panta Rhei client into the `src`-directory:
+3.  Clone the Panta Rhei client into the `src`-directory:
     
-```bash
-cd /home/panda/dtz_panda/ros_kafka_adapter
-git clone https://github.com/iot-salzburg/panta_rhei src/panta_rhei > /dev/null 2>&1 || echo "Repo already exists"
-git -C src/panta_rhei/ checkout srfg-digitaltwin
-git -C src/panta_rhei/ pull
-```
+    ```bash
+    cd /home/panda/dtz_panda/ros_kafka_adapter
+    git clone https://github.com/iot-salzburg/panta_rhei src/panta_rhei > /dev/null 2>&1 || echo "Repo already exists"
+    git -C src/panta_rhei/ checkout srfg-digitaltwin
+    git -C src/panta_rhei/ pull
+    ```
+
 
 ## Basic Configuration
 Now, the client can be imported and used in `ros_kafka_adapter.py` with:
