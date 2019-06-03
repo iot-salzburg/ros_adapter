@@ -329,13 +329,13 @@ bool findPlaceOne(const robot_state::JointModelGroup* joint_model_group,
     current_state->copyJointGroupPositions(joint_model_group, joint_group_positions);
 
     joint_group_positions =
-            {-0.913144,            // Joint 1
-             +0.756255,            // Joint 2
-             -1.601157,            // Joint 3
-             -1.098657,           // Joint 4
-             +0.218129,           // Joint 5
-             +1.704417,            // Joint 6
-             -1.399994             // Joint 7
+            {-0.802786,            // Joint 1
+             +1.120201,            // Joint 2
+             -1.879392,            // Joint 3
+             -1.399256,           // Joint 4
+             +0.268353,           // Joint 5
+             +2.069475,            // Joint 6
+             -1.462804             // Joint 7
             };
 
     moveFunction(joint_group_positions, joint_model_group, move_group, visual_tools, speed, text_pose);
@@ -388,13 +388,13 @@ bool findPlaceTwo(const robot_state::JointModelGroup* joint_model_group,
     current_state->copyJointGroupPositions(joint_model_group, joint_group_positions);
 
     joint_group_positions =
-            {-0.333083,            // Joint 1
-             +0.781430,            // Joint 2
-             -2.071653,            // Joint 3
-             -1.736596,           // Joint 4
-             +0.153589,           // Joint 5
-             +2.013920,            // Joint 6
-             -1.577458             // Joint 7
+            {-0.484176,            // Joint 1
+             +1.137741,            // Joint 2
+             -2.052988,            // Joint 3
+             -1.883259,           // Joint 4
+             +0.233163,           // Joint 5
+             +2.289737,            // Joint 6
+             -1.573190             // Joint 7
             };
 
     moveFunction(joint_group_positions, joint_model_group, move_group, visual_tools, speed, text_pose);
@@ -448,13 +448,13 @@ bool findPlaceThree(const robot_state::JointModelGroup* joint_model_group,
     current_state->copyJointGroupPositions(joint_model_group, joint_group_positions);
 
     joint_group_positions =
-            {-0.130311,            // Joint 1
-             +0.965361,            // Joint 2
-             -2.378487,            // Joint 3
-             -2.053788,           // Joint 4
-             +0.286848,           // Joint 5
-             +2.037519,            // Joint 6
-             -1.829900            // Joint 7
+            {-0.216743,            // Joint 1
+             +1.213158,            // Joint 2
+             -2.272480,            // Joint 3
+             -2.278846,           // Joint 4
+             +0.234566,           // Joint 5
+             +2.447569,            // Joint 6
+             -1.752545            // Joint 7
             };
 
     moveFunction(joint_group_positions, joint_model_group, move_group, visual_tools, speed, text_pose);
@@ -507,13 +507,13 @@ bool findPlaceSeven(const robot_state::JointModelGroup* joint_model_group,
     current_state->copyJointGroupPositions(joint_model_group, joint_group_positions);
 
     joint_group_positions =
-            {-0.629148,            // Joint 1
-             +1.101855,            // Joint 2
-             -1.488895,            // Joint 3
-             -1.918923,           // Joint 4
-             +0.496562,           // Joint 5
-             +2.447757,            // Joint 6
-             -1.393599             // Joint 7
+            {-0.675392 ,            // Joint 1
+             +1.360953,            // Joint 2
+             -1.536964,            // Joint 3
+             -1.853778,           // Joint 4
+             +0.475122,           // Joint 5
+             +2.432133,            // Joint 6
+             -1.265867             // Joint 7
             };
 
     moveFunction(joint_group_positions, joint_model_group, move_group, visual_tools, speed, text_pose);
@@ -568,13 +568,13 @@ bool findPlaceEight(const robot_state::JointModelGroup* joint_model_group,
     current_state->copyJointGroupPositions(joint_model_group, joint_group_positions);
 
     joint_group_positions =
-            {-0.349005,            // Joint 1
-             +1.032889,            // Joint 2
-             -1.649180,            // Joint 3
-             -2.331614,           // Joint 4
-             +0.617636,           // Joint 5
-             +2.577534,            // Joint 6
-             -1.600114             // Joint 7
+            {-0.405421,            // Joint 1
+             +1.357507,            // Joint 2
+             -1.555525,            // Joint 3
+             -2.327296,           // Joint 4
+             +0.475904,           // Joint 5
+             +2.697504,            // Joint 6
+             -1.321866             // Joint 7
             };
 
     moveFunction(joint_group_positions, joint_model_group, move_group, visual_tools, speed, text_pose);
@@ -628,13 +628,13 @@ bool findPlaceNine(const robot_state::JointModelGroup* joint_model_group,
     current_state->copyJointGroupPositions(joint_model_group, joint_group_positions);
 
     joint_group_positions =
-            {-0.078609,            // Joint 1
-             +1.005372,            // Joint 2
-             -1.866499,            // Joint 3
-             -2.685615,           // Joint 4
-             +0.623456,           // Joint 5
-             +2.673920,            // Joint 6
-             -1.735200             // Joint 7
+            {-0.216917,            // Joint 1
+             +1.304119,            // Joint 2
+             -1.574034,            // Joint 3
+             -2.722192,           // Joint 4
+             +0.475608,           // Joint 5
+             +2.988826,            // Joint 6
+             -1.371405             // Joint 7
             };
 
     moveFunction(joint_group_positions, joint_model_group, move_group, visual_tools, speed, text_pose);
@@ -686,13 +686,13 @@ bool findPlaceFour(const robot_state::JointModelGroup* joint_model_group,
     current_state->copyJointGroupPositions(joint_model_group, joint_group_positions);
 
     joint_group_positions =
-            {-0.637615,            // Joint 1
-             +0.986430,            // Joint 2
-             -1.706510,            // Joint 3
-             -1.704101,           // Joint 4
-             +0.424311,           // Joint 5
-             +2.164048,            // Joint 6
-             -1.479736             // Joint 7
+            {-0.709982,            // Joint 1
+             +1.289735,            // Joint 2
+             -1.735670,            // Joint 3
+             -1.695347,           // Joint 4
+             +0.319118,           // Joint 5
+             +2.314825,            // Joint 6
+             -1.317854             // Joint 7
             };
 
     moveFunction(joint_group_positions, joint_model_group, move_group, visual_tools, speed, text_pose);
@@ -744,13 +744,13 @@ bool findPlaceFive(const robot_state::JointModelGroup* joint_model_group,
     current_state->copyJointGroupPositions(joint_model_group, joint_group_positions);
 
     joint_group_positions =
-            {-0.274015,            // Joint 1
-             +0.920260,            // Joint 2
-             -1.947719,            // Joint 3
-             -2.138457,           // Joint 4
-             +0.328403,           // Joint 5
-             +2.328301,            // Joint 6
-             -1.592518             // Joint 7
+            {-0.419530,            // Joint 1
+             +1.245596,            // Joint 2
+             -1.843816,            // Joint 3
+             -2.162774,           // Joint 4
+             +0.389124,           // Joint 5
+             +2.525661,            // Joint 6
+             -1.537265             // Joint 7
             };
 
     moveFunction(joint_group_positions, joint_model_group, move_group, visual_tools, speed, text_pose);
@@ -802,13 +802,13 @@ bool findPlaceSix(const robot_state::JointModelGroup* joint_model_group,
     current_state->copyJointGroupPositions(joint_model_group, joint_group_positions);
 
     joint_group_positions =
-            {-0.063656,            // Joint 1
-             +1.041284,            // Joint 2
-             -2.192959,            // Joint 3
-             -2.424367,           // Joint 4
-             +0.362387,           // Joint 5
-             +2.321516,            // Joint 6
-             -1.721634             // Joint 7
+            {-0.159131,            // Joint 1
+             +1.262382,            // Joint 2
+             -2.027054,            // Joint 3
+             -2.547534,           // Joint 4
+             +0.387758,           // Joint 5
+             +2.592526,            // Joint 6
+             -1.653765             // Joint 7
             };
 
 
@@ -1035,9 +1035,6 @@ bool moveFromStorage(const robot_state::JointModelGroup* joint_model_group,
 
     moveFunction(joint_group_positions, joint_model_group, move_group, visual_tools, speed, text_pose);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
     return true;
 }
 
@@ -1057,7 +1054,6 @@ void closeGripper(actionlib::SimpleActionClient<franka_gripper::GraspAction> *ac
     goalG.epsilon.inner = 0.05;
     goalG.epsilon.outer = 0.05;
     acg->sendGoal(goalG);
-
 }
 
 void homeGripper(actionlib::SimpleActionClient<franka_gripper::HomingAction> *ach, franka_gripper::HomingGoal goal){
@@ -1211,6 +1207,7 @@ int main(int argc, char** argv)
     actionlib::SimpleActionClient<franka_gripper::StopAction> acs("franka_gripper/stop", true);
     actionlib::SimpleActionClient<franka_gripper::MoveAction> acm("franka_gripper/move", true);
     actionlib::SimpleActionClient<franka_gripper::HomingAction> ach("franka_gripper/homing", true);
+    // actionlib::SimpleActionClient<franka_control::ErrorRecoveryAction> era("franka_control/errorRecovery", true);
 
     ROS_INFO("Waiting for action server to start.");
     //wait for the action server to start
@@ -1218,22 +1215,20 @@ int main(int argc, char** argv)
     acs.waitForServer();
     acm.waitForServer();
     ach.waitForServer();
+    // era.waitForServer();
     ROS_INFO("Action server started, sending goal.");
     franka_gripper::GraspGoal goalG;
     franka_gripper::StopGoal goalS;
     franka_gripper::MoveGoal goalM;
     franka_gripper::HomingGoal goalH;
+    // franka_control::ErrorRecoveryActionGoal goalError;
 
     // openGripper(&acs, &acm, goalS, goalM);
-
-
-
 
     ///////////////// MAIN LOOP //////////////////
     try{
 
         while(ros::ok()) {
-
 
             ////////////////// RECEIVING ORDERS //////////////////
             if (global_order_movement.compare("PS") == 0 || global_order_movement.compare("SO") == 0) {
@@ -1258,21 +1253,24 @@ int main(int argc, char** argv)
             global_ros_response.data = global_response;
             pub.publish(global_ros_response);
 
-
-            ////////////////// MOVEMENT OF ROBOT //////////////////
-            if (global_order_movement.compare("PO") == 0) {
-                homeGripper(&ach, goalH);
-                getBlockFromPrinterToOutput(joint_model_group, &move_group, visual_tools, speed, text_pose,
-                                            current_state, &acg, &acs, &acm, goalG, goalS, goalM);
-            } else if (global_order_movement.compare("PS") == 0) {
-                homeGripper(&ach, goalH);
-                getBlockFromPrinterToStorage(joint_model_group, &move_group, visual_tools, speed, text_pose, global_order_pos,
-                                             current_state, &acg, &acs, &acm, goalG, goalS, goalM);
-            } else if (global_order_movement.compare("SO") == 0) {
-                homeGripper(&ach, goalH);
-                getBlockFromStorageToOutput(joint_model_group, &move_group, visual_tools, speed, text_pose, global_order_pos,
-                                            current_state, &acg, &acs, &acm, goalG, goalS, goalM);
-            }
+            // try{
+                ////////////////// MOVEMENT OF ROBOT //////////////////
+                if (global_order_movement.compare("PO") == 0) {
+                    homeGripper(&ach, goalH);
+                    getBlockFromPrinterToOutput(joint_model_group, &move_group, visual_tools, speed, text_pose,
+                                                current_state, &acg, &acs, &acm, goalG, goalS, goalM);
+                } else if (global_order_movement.compare("PS") == 0) {
+                    homeGripper(&ach, goalH);
+                    getBlockFromPrinterToStorage(joint_model_group, &move_group, visual_tools, speed, text_pose, global_order_pos,
+                                                current_state, &acg, &acs, &acm, goalG, goalS, goalM);
+                } else if (global_order_movement.compare("SO") == 0) {
+                    homeGripper(&ach, goalH);
+                    getBlockFromStorageToOutput(joint_model_group, &move_group, visual_tools, speed, text_pose, global_order_pos,
+                                                current_state, &acg, &acs, &acm, goalG, goalS, goalM);
+                }
+            // }catch(const std::exception& e){
+            //     era.sendGoal(goalError);
+            // }
 
             // publish state
             global_response = "Stopped";
@@ -1281,14 +1279,10 @@ int main(int argc, char** argv)
             global_ros_response.data = global_response;
             pub.publish(global_ros_response);
 
-
             // Reset Position, otherwise robot would move in an endless loop
             global_order_pos = 0;
 
-
-
             sleep(2);
-
         }
 
     } catch(const std::exception& e){
@@ -1296,5 +1290,5 @@ int main(int argc, char** argv)
         ros::shutdown();
         return 0;
     }
-
 }
+
