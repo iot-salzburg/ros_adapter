@@ -7,7 +7,7 @@ User=panda
 Group=panda
 WorkingDirectory=/home/panda/franka_apps_ws
 ExecStart=/bin/bash -c '. devel/setup.bash && /opt/ros/kinetic/bin/rosrun state_export ros_kafka_adapter.py'
-Restart=on-abort
+Restart=always
 
 [Install]
 WantedBy=multi-user.target

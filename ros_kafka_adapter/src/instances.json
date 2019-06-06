@@ -91,16 +91,16 @@
       "properties": {
         "specification": "https://s3-eu-central-1.amazonaws.com/franka-de-uploads-staging/uploads/2018/05/2018-05-datasheet-panda.pdf"
       }, 
-      "name": "Panda", 
-      "description": "Franka Emika Panda robot in the Iot Lab Salzburg on the central desk"
+      "description": "Franka Emika Panda robot in the Iot Lab Salzburg on the central desk", 
+      "name": "Panda"
     }
   }, 
   "Sensors": {
     "ros_franka_control": {
-      "metadata": "https://s3-eu-central-1.amazonaws.com/franka-de-uploads-staging/uploads/2018/05/2018-05-datasheet-panda.pdf", 
       "encodingType": "application/pdf", 
       "description": "Franka Panda ROS controller with state export.", 
-      "name": "franka panda control"
+      "name": "franka panda control", 
+      "metadata": "https://s3-eu-central-1.amazonaws.com/franka-de-uploads-staging/uploads/2018/05/2018-05-datasheet-panda.pdf"
     }
   }
 }
