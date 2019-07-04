@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(niks_experiments)
+project(dtz_demonstration)
 
 add_compile_options(-std=c++11)
 find_package(catkin REQUIRED COMPONENTS message_generation rospy)
@@ -45,8 +45,8 @@ catkin_package()
 add_executable(Z_FirstTry src/Z_FirstTry.cpp)
 target_link_libraries(Z_FirstTry ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
-add_executable(Stretching src/Stretching.cpp)
-target_link_libraries(Stretching ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${PROTOBUF_LIBRARY})
+add_executable(DTZ_LagerDemo src/DTZ_LagerDemo.cpp)
+target_link_libraries(DTZ_LagerDemo ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${PROTOBUF_LIBRARY})
 
 add_executable(Stretching_ohne_Rviz src/Stretching_ohne_Rviz.cpp)
 target_link_libraries(Stretching_ohne_Rviz ${catkin_LIBRARIES} ${Boost_LIBRARIES})
@@ -56,6 +56,9 @@ target_link_libraries(pick_and_place ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 add_executable(Kick_Off_Event_Move_It src/Kick_Off_Event_Move_It.cpp)
 target_link_libraries(Kick_Off_Event_Move_It ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+
+add_executable(ErrorReset src/ErrorReset.cpp)
+target_link_libraries(ErrorReset ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 
 install(DIRECTORY launch DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
@@ -72,10 +75,11 @@ install(PROGRAMS scripts/opc_ua_ros_server.py DESTINATION ${CATKIN_PACKAGE_BIN_D
 
 
 install(TARGETS Z_FirstTry DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-install(TARGETS Stretching DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+install(TARGETS DTZ_LagerDemo DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 install(TARGETS Stretching_ohne_Rviz DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 install(TARGETS pick_and_place DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 install(TARGETS Kick_Off_Event_Move_It DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+install(TARGETS ErrorReset DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 
 ###########
