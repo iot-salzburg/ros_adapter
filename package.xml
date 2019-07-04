@@ -1,12 +1,12 @@
 <package>
 
-  <name>niks_experiments</name>
-  <version>0.3.0</version>
+  <name>dtz_demonstration</name>
+  <version>0.4.0</version>
   <description>
      An automatically generated package with all the configuration and launch files for using the panda with the MoveIt! Motion Planning Framework
   </description>
   <author email="dominik.hofer@salzburgresearch.at">DP Hofer</author>
-  <maintainer email="dominik.hofer@salzburgresearch.at">DP Hofer</maintainer>
+  <maintainer email="armin.niedermueller@salzburgresearch.at">Armin Niedermueller</maintainer>
 
   <license>BSD</license>
 
