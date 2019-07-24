@@ -35,14 +35,14 @@ version **0.11.6**
 
     ```bash
     cd /home/panda/franka_apps_ws/src/state_export/scripts/
-    ln -s /home/panda/dtz_panda/ros_kafka_adapter/src/ros_kafka_adapter.py ros_kafka_adapter.py
+    ln -sf /home/panda/dtz_panda/ros_kafka_adapter/src/ros_kafka_adapter.py ros_kafka_adapter.py
 
     cd /home/panda/franka_apps_ws
     . devel/setup.bash
     roslaunch franka_control franka_control.launch robot_ip:=192.168.13.1
     rostopic list
     ```
-
+    If connected with `ssh` ther will be shown an `error message including pyqt`, because there is not GUI. This message can be ignored.
     The command `rostopic list` should return multiple topics including `/franka_state_controller/franka_states` and `/joint_states`.
 
 
@@ -95,6 +95,7 @@ decodes the generic data format using the same SensorThings server.
 Run in a separate console:
 
 ```bash
+cd /home/panda/franka_apps_ws
 roslaunch franka_control franka_control.launch robot_ip:=192.168.13.1
 ```
     
