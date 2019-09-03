@@ -1,4 +1,9 @@
-# PandaCode
+# Panda 
+
+Dieses Repository enthält Dokumentationen um den Panda Roboter für folgende Zwecke:
+* Startanleitung für den Panda im Demonstrationsmodus, welche hier dokumentiert ist
+* [ROS -  Panta Rhei Adapter](ros_kafka_adapter/README.md) 
+
 
 ## Startanleitung für den PandaRoboter im Demonstrationsmodus:
 

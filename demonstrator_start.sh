@@ -1,27 +1,26 @@
 #!/bin/bash
+# Felix Strohmeier / Armin Niedermueller - SALZBURG RESEARCH
 
 
-
-echo "Is the ROBOT unfolded??"
-read -n 1 -s -r -p "Press any key to continue"
-echo 
+echo "Starting DTZ - Robot / Storage / OPC Ua Script"
+sleep 1
 
 
-gnome-terminal -e "bash -c 'roslaunch franka_control franka_control.launch robot_ip:=192.168.13.1'"
+gnome-terminal -e "bash -c 'export LD_LIBRARY_PATH=/opt/ros/kinetic/lib/:/opt/ros/kinetic/lib/x86_64-linux-gnu/ && roslaunch franka_control franka_control.launch robot_ip:=192.168.13.1'"
 #sleep 5
 #gnome-terminal -e "roslaunch franka_gripper franka_gripper.launch robot_ip:=192.168.13.1"
-sleep 5
+sleep 4
 
 rostopic pub -1 /franka_control/error_recovery/goal franka_control/ErrorRecoveryActionGoal "{}"
-gnome-terminal -e "bash -c 'roslaunch panda_moveit_config panda_moveit.launch'"
-sleep 5
-gnome-terminal -e "bash -c 'roslaunch panda_moveit_config moveit_rviz.launch'"
-sleep 5
-gnome-terminal -e "bash -c 'cd ~/libfranka/ws_moveit/ && source devel/setup.bash && rosrun niks_experiments Stretching'"
-sleep 5
-gnome-terminal -e "bash -c 'cd ~/libfranka/ws_moveit/ && source devel/setup.bash && rosrun niks_experiments opc_ua_ros_server.py'"
+gnome-terminal -e "bash -c 'export LD_LIBRARY_PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64:/usr/lib/jvm/java-8-openjdk-amd64/serve:/opt/ros/kinetic/lib/:/opt/ros/kinetic/lib/x86_64-linux-gnu/ && roslaunch panda_moveit_config panda_moveit.launch'"
+sleep 4
+gnome-terminal -e "bash -c 'export LD_LIBRARY_PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64:/usr/lib/jvm/java-8-openjdk-amd64/serve:/opt/ros/kinetic/lib/:/opt/ros/kinetic/lib/x86_64-linux-gnu/ && roslaunch panda_moveit_config moveit_rviz.launch'"
+sleep 4
+gnome-terminal -e "bash -c 'export LD_LIBRARY_PATH=/opt/ros/kinetic/lib/:/opt/ros/kinetic/lib/x86_64-linux-gnu/ && cd ~/libfranka/ws_moveit/ && source devel/setup.bash && rosrun dtz_demonstration DTZ_LagerDemo'"
+sleep 4
+gnome-terminal -e "bash -c 'export LD_LIBRARY_PATH=/opt/ros/kinetic/lib/:/opt/ros/kinetic/lib/x86_64-linux-gnu/ && cd ~/libfranka/ws_moveit/ && source devel/setup.bash && rosrun dtz_demonstration opc_ua_ros_server.py'"
 
-sleep 15
+sleep 4
 echo "PRESS 'Continue'"
 
 #Im Rviz Fenster -> obere Leiste "Panel" -> Add New Panel -> RvizVisualToolsgui (OK Drücken, nicht doppelklick)
