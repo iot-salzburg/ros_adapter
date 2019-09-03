@@ -3,3 +3,4 @@ __pycache__/
 *pyc
 
 ros_kafka_adapter/src/panta_rhei/
+src/panta_rhei/

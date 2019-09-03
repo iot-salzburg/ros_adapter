@@ -1,3 +1,0 @@
-<launch>
-    <node pkg="niks_experiments" name="Stretching" type="Stretching"/>
-</launch>
