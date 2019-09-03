@@ -53,18 +53,19 @@ def publish_message(payload):
     try:
         pTime = datetime.utcfromtimestamp(payload.header.stamp.secs + payload.header.stamp.nsecs * 1e-9).replace(tzinfo=pytz.UTC).isoformat()
         message["phenomenonTime"] = pTime
-    except Exception, e:
+    except Exception as e:
         rospy.logwarn("cannot get timestamp from payload %s", payload)
         rospy.logdebug(e)
-#        pass
+       # pass
         
     
     rospy.logdebug(rospy.get_name() + " publish to kafka %s", message)
     # Trigger any available delivery report callbacks from previous produce() calls
     rospy.loginfo(rospy.get_name() + " publish...")
     producer.poll(0)
-    producer.produce(KAFKA_TOPIC_metric, json.dumps(message).encode('utf-8'), key="Key",
-                     callback=delivery_report)
+    print(json.dumps(message, indent=2))
+    # producer.produce(KAFKA_TOPIC_metric, json.dumps(message).encode('utf-8'), key="Key",
+    #                  callback=delivery_report)
 
 
 def delivery_report(err, msg):
