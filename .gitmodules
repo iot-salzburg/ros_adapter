@@ -1,0 +1,4 @@
+[submodule "src/panta_rhei"]
+	path = src/panta_rhei
+	url = https://github.com/iot-salzburg/panta_rhei.git
+	branch = client_1v0

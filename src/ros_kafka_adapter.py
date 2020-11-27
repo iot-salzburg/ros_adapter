@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Example Python node to listen on a specific topic."""
 
@@ -18,16 +18,30 @@ from sensor_msgs.msg import JointState
 #from node_example.msg import NodeExampleDataWithHeader
 from rospy_message_converter import message_converter
 
-# from confluent_kafka import Producer, KafkaError
+
+# confluent_kafka is based on librdkafka, details in requirements.txt
 from panta_rhei.client.digital_twin_client import DigitalTwinClient
 
+__author__ = "Salzburg Research"
+__version__ = "0.1"
+__date__ = "27 November 2020"
+__email__ = "christoph.schranz@salzburgresearch.at"
+__status__ = "Development"
+
+
 # Panta Rhei configuration
-CLIENT_NAME = os.environ.get("CLIENT_NAME", "ros-adapter")
-SYSTEM_NAME = os.environ.get("SYSTEM_NAME", "at.srfg.iot.dtz")  # "at.srfg.iot.dtz"
-SENSORTHINGS_HOST = os.environ.get("SENSORTHINGS_HOST", "192.168.48.71:8082")
-BOOTSTRAP_SERVERS = os.environ.get("BOOTSTRAP_SERVERS", "192.168.48.71:9092,192.168.48.72:9092,192.168.48.73:9092,192.168.48.74:9092,192.168.48.75:9092")
+config = {"client_name": os.environ.get("CLIENT_NAME", "ros-adapter"),
+          "system": os.environ.get("SYSTEM_NAME", "at.srfg.iot.dtz"),  # "at.srfg.iot.dtz"
+          "gost_servers": os.environ.get("SENSORTHINGS_HOST", "192.168.48.71:8082"),
+          "kafka_bootstrap_servers": os.environ.get("BOOTSTRAP_SERVERS",
+                                                    "192.168.48.71:9092,192.168.48.71:9093,192.168.48.71:9094")
+          }
+# load files relative to this file
+dirname = os.path.dirname(os.path.abspath(__file__))
+INSTANCES = os.path.join(dirname, "instances.json")
 
 MIN_SENDING_INTERVALL = 10  # Minimal sending intervall
+
 
 class ros_status:
     def __init__(self):
@@ -53,6 +67,7 @@ def publishFrankaState(payload):
     """builds messages for the working point coordinates (O_T_EE, cols: 13,14,15)
     and the forces in z-axis there (O_F_ext_K, col 3) based on the ros topic '/franka_state_controller/franka_states'"""
     rospy.logdebug(rospy.get_name() + " Type: %s, payload is %s", type(payload), payload)
+    # print(f"Received new franka_states: {payload}.")
 
     # Send if a state change was detected, or every MIN_SENDING_INTERVALL seconds
     actual_franka_state_pos_x = payload.O_T_EE[12]
@@ -103,6 +118,7 @@ def publishFrankaState(payload):
 def publishJointState(payload):
     """builds messages for the gripper position based on the ros topic '/joint_states'"""
     rospy.logdebug(rospy.get_name() + " Type: %s, payload is %s", type(payload), payload)
+    # print(f"Received new joint_states: {payload}.")
 
     # Extract both gripper positions (index 7 and 8) from payload, sending the sum of both
     actual_panda_gripper_states = payload.position[7] + payload.position[8]
@@ -120,7 +136,7 @@ def publishJointState(payload):
          # try to get the timestamp from the header
         try:
             pTime = datetime.utcfromtimestamp(payload.header.stamp.secs + payload.header.stamp.nsecs * 1e-9).replace(tzinfo=pytz.UTC).isoformat()
-        except Exception, e:
+        except Exception as e:
             rospy.logwarn("cannot get timestamp from payload %s", payload)
             rospy.logdebug(e)
             pTime = datetime.utcnow().replace(tzinfo=pytz.UTC).isoformat()
@@ -132,7 +148,7 @@ def publishJointState(payload):
 def get_pTime_from_payload(payload):
     try:
         pTime = datetime.utcfromtimestamp(payload.header.stamp.secs + payload.header.stamp.nsecs * 1e-9).replace(tzinfo=pytz.UTC).isoformat()
-    except Exception, e:
+    except Exception as e:
         rospy.logwarn("cannot get timestamp from payload %s", payload)
         rospy.logdebug(e)
         pTime = datetime.utcnow().replace(tzinfo=pytz.UTC).isoformat()
@@ -174,19 +190,9 @@ def adapters():
 if __name__ == '__main__':
     ros_status = ros_status()
 
-    # Init the panta rhei client
-    dirname = os.path.dirname(os.path.realpath(__file__))
-    INSTANCES = os.path.join(dirname, "instances.json")
-    MAPPINGS = os.path.join(dirname, "ds-mappings.json")
-
-    config = {"client_name": CLIENT_NAME,
-              "system": SYSTEM_NAME,
-              "kafka_bootstrap_servers": BOOTSTRAP_SERVERS,
-              "gost_servers": SENSORTHINGS_HOST}
-
     pr_client = DigitalTwinClient(**config)
-    pr_client.register_new(instance_file=INSTANCES)
-    # pr_client.register_existing(mappings_file=MAPPINGS)
+    pr_client.logger.info("Main: Starting client.")
+    pr_client.register(instance_file=INSTANCES)
 
     # Initialize the node and name it.
     rospy.init_node('ros_kafka_adapter', log_level=rospy.INFO)

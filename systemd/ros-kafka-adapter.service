@@ -1,13 +1,15 @@
 [Unit]
-Description=Service to forward ROS-states to Kafka, https://github.com/iot-salzburg/dtz_panda
+Description=Service to forward ROS-states to Kafka, https://github.com/iot-salzburg/ros_adapter
 After=network.target
 
 [Service]
 User=panda
 Group=panda
-WorkingDirectory=/home/panda/franka_apps_ws
-ExecStart=/bin/bash -c '. devel/setup.bash && /opt/ros/kinetic/bin/rosrun state_export ros_kafka_adapter.py'
+WorkingDirectory=/srv/ros_adapter
+# ExecStart=/bin/bash -c '. devel/setup.bash && /opt/ros/kinetic/bin/rosrun state_export ros_kafka_adapter.py'
+ExecStart=/bin/bash -c 'source .env/bin/activate && python src/ros_kafka_adapter.py'
 Restart=always
+StartLimitIntervalSec=60
 
 [Install]
 WantedBy=multi-user.target

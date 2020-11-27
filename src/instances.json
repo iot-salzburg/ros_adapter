@@ -1,105 +1,105 @@
 {
   "Datastreams": {
     "panda.franka_state.force_z": {
-      "observationType": "http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement", 
-      "name": "End Effector vertical Force", 
+      "observationType": "http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement",
+      "name": "End Effector vertical Force",
       "unitOfMeasurement": {
-        "definition": "http://www.qudt.org/qudt/owl/1.0.0/unit/Instances.html#Newton", 
-        "symbol": "N", 
+        "definition": "http://www.qudt.org/qudt/owl/1.0.0/unit/Instances.html#Newton",
+        "symbol": "N",
         "name": "Newton"
-      }, 
-      "Thing": "panda", 
+      },
+      "Thing": "panda",
       "ObservedProperty": {
-        "definition": "http://www.qudt.org/qudt/owl/1.0.0/quantity/Instances.html#Force", 
-        "name": "Measured total force.", 
+        "definition": "http://www.qudt.org/qudt/owl/1.0.0/quantity/Instances.html#Force",
+        "name": "Measured total force.",
         "description": "Measured total force on the end effector including its own weight."
-      }, 
-      "Sensor": "ros_franka_control", 
+      },
+      "Sensor": "ros_franka_control",
       "description": "Measured vertical force on the end effector"
-    }, 
+    },
     "panda.franka_state.pos_x": {
-      "observationType": "http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement", 
-      "name": "End Effector x-Position", 
+      "observationType": "http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement",
+      "name": "End Effector x-Position",
       "unitOfMeasurement": {
-        "definition": "http://www.qudt.org/qudt/owl/1.0.0/unit/Instances.html#Meter", 
-        "symbol": "m", 
+        "definition": "http://www.qudt.org/qudt/owl/1.0.0/unit/Instances.html#Meter",
+        "symbol": "m",
         "name": "Meter"
-      }, 
-      "Thing": "panda", 
+      },
+      "Thing": "panda",
       "ObservedProperty": {
-        "definition": "http://www.qudt.org/qudt/owl/1.0.0/quantity/Instances.html#Length", 
-        "name": "Measured End Effector x-Position", 
+        "definition": "http://www.qudt.org/qudt/owl/1.0.0/quantity/Instances.html#Length",
+        "name": "Measured End Effector x-Position",
         "description": "Relative position of the end effector to the home position of the robot."
-      }, 
-      "Sensor": "ros_franka_control", 
+      },
+      "Sensor": "ros_franka_control",
       "description": "Measured end effector pose in base frame for x-axis"
-    }, 
+    },
     "panda.franka_state.pos_y": {
-      "observationType": "http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement", 
-      "name": "End Effector y-Position", 
+      "observationType": "http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement",
+      "name": "End Effector y-Position",
       "unitOfMeasurement": {
-        "definition": "http://www.qudt.org/qudt/owl/1.0.0/unit/Instances.html#Meter", 
-        "symbol": "m", 
+        "definition": "http://www.qudt.org/qudt/owl/1.0.0/unit/Instances.html#Meter",
+        "symbol": "m",
         "name": "Meter"
-      }, 
-      "Thing": "panda", 
+      },
+      "Thing": "panda",
       "ObservedProperty": {
-        "definition": "http://www.qudt.org/qudt/owl/1.0.0/quantity/Instances.html#Length", 
-        "name": "Measured End Effector y-Position", 
+        "definition": "http://www.qudt.org/qudt/owl/1.0.0/quantity/Instances.html#Length",
+        "name": "Measured End Effector y-Position",
         "description": "Relative position of the end effector to the home position of the robot."
-      }, 
-      "Sensor": "ros_franka_control", 
+      },
+      "Sensor": "ros_franka_control",
       "description": "Measured end effector pose in base frame for y-axis"
-    }, 
+    },
     "panda.franka_state.pos_z": {
-      "observationType": "http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement", 
-      "name": "End Effector z-Position", 
+      "observationType": "http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement",
+      "name": "End Effector z-Position",
       "unitOfMeasurement": {
-        "definition": "http://www.qudt.org/qudt/owl/1.0.0/unit/Instances.html#Meter", 
-        "symbol": "m", 
+        "definition": "http://www.qudt.org/qudt/owl/1.0.0/unit/Instances.html#Meter",
+        "symbol": "m",
         "name": "Meter"
-      }, 
-      "Thing": "panda", 
+      },
+      "Thing": "panda",
       "ObservedProperty": {
-        "definition": "http://www.qudt.org/qudt/owl/1.0.0/quantity/Instances.html#Length", 
-        "name": "Measured End Effector z-Position", 
+        "definition": "http://www.qudt.org/qudt/owl/1.0.0/quantity/Instances.html#Length",
+        "name": "Measured End Effector z-Position",
         "description": "Relative position of the end effector to the home position of the robot."
-      }, 
-      "Sensor": "ros_franka_control", 
+      },
+      "Sensor": "ros_franka_control",
       "description": "Measured end effector pose in base frame for z-axis"
-    }, 
+    },
     "panda.joint_states.gripper_pos": {
-      "observationType": "http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement", 
-      "name": "Actual Gripper Position", 
+      "observationType": "http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Measurement",
+      "name": "Actual Gripper Position",
       "unitOfMeasurement": {
-        "definition": "http://www.qudt.org/qudt/owl/1.0.0/unit/Instances.html#Meter", 
-        "symbol": "m", 
+        "definition": "http://www.qudt.org/qudt/owl/1.0.0/unit/Instances.html#Meter",
+        "symbol": "m",
         "name": "Meter"
-      }, 
-      "Thing": "panda", 
+      },
+      "Thing": "panda",
       "ObservedProperty": {
-        "definition": "http://www.qudt.org/qudt/owl/1.0.0/quantity/Instances.html#Length", 
-        "name": "Finger Width", 
+        "definition": "http://www.qudt.org/qudt/owl/1.0.0/quantity/Instances.html#Length",
+        "name": "Finger Width",
         "description": "Measured finger width distance of the end effector."
-      }, 
-      "Sensor": "ros_franka_control", 
+      },
+      "Sensor": "ros_franka_control",
       "description": "Total gripper finger width."
     }
-  }, 
+  },
   "Things": {
     "panda": {
       "properties": {
         "specification": "https://s3-eu-central-1.amazonaws.com/franka-de-uploads-staging/uploads/2018/05/2018-05-datasheet-panda.pdf"
-      }, 
-      "description": "Franka Emika Panda robot in the Iot Lab Salzburg on the central desk", 
+      },
+      "description": "Franka Emika Panda robot in the Iot Lab Salzburg on the central desk",
       "name": "Panda"
     }
-  }, 
+  },
   "Sensors": {
     "ros_franka_control": {
-      "encodingType": "application/pdf", 
-      "description": "Franka Panda ROS controller with state export.", 
-      "name": "franka panda control", 
+      "encodingType": "application/pdf",
+      "description": "Franka Panda ROS controller with state export.",
+      "name": "franka panda control",
       "metadata": "https://s3-eu-central-1.amazonaws.com/franka-de-uploads-staging/uploads/2018/05/2018-05-datasheet-panda.pdf"
     }
   }
