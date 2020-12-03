@@ -1,0 +1,1 @@
+/srv/ros_adapter/.env/bin/python /srv/ros_adapter/src/ros_kafka_adapter.py &> /srv/ros_adapter/ros_kafka_adapter.log &

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """Example Python node to listen on a specific topic."""
 
@@ -10,7 +10,10 @@ import pytz
 import time
 from datetime import datetime
 
+sys.path.append('/opt/ros/kinetic/lib/python2.7/dist-packages')
 import rospy
+import rosgraph
+
 # Import custom message data.
 from franka_msgs.msg import FrankaState
 from sensor_msgs.msg import JointState

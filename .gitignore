@@ -5,3 +5,5 @@ __pycache__/
 ros_kafka_adapter/src/panta_rhei/
 .env/
 src/panta_rhei
+.vscode
+*.log
