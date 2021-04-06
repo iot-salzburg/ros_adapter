@@ -131,7 +131,7 @@ tf2-py==0.5.20
 tf2-ros==0.5.20
 topic-tools==1.12.17
 urdfdom-py==0.3.3
-urllib3==1.26.2
+urllib3>=1.26.4
 xacro==1.11.3
 zope.interface==5.2.0
 confluent-kafka==0.11.5
