@@ -7,7 +7,7 @@ camera-calibration==1.12.23
 camera-calibration-parsers==1.11.13
 catkin==0.7.29
 catkin-pkg==0.4.23
-certifi==2020.11.8
+certifi==2022.12.7
 chardet==3.0.4
 cob-cartesian-controller==0.7.12
 cob-script-server==0.6.18
